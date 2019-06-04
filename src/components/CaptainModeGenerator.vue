@@ -1,41 +1,32 @@
 <template>
   <div class="parse">
-    <h5>DraftKings 'Captain Mode' NFL Lineup Generator
-      <b-btn variant="danger"
-        v-b-popover.hover="'Import the .csv for your contest , remove players you dislike, and start generating!'"
+    <h5>DraftKings 'Captain Mode' Lineup Generator
+      <b-btn size="sm" variant="danger"
+        v-b-popover.hover="'Import the .csv for your contest , remove players you dislike, navigate to the lineups tab and start generating!'"
         title="Instructions">
         ?
       </b-btn>
-      <h5 class="float-right" style="padding:10px;">
+      <!-- <h5 class="float-right" style="padding:10px;">
         <a href="https://neocities.org/site/lineupgenerator">Donate if you win </a>
-      </h5>
+      </h5> -->
     </h5>
-    <div class="alert alert-info">
-      <br>Import the player list .csv for your contest below (download the .csv from DK/FanDuel)
-      <br>Remove players that you don't want in your player pool (exposure coming soon, for now, modify the .csv to
-      increase exposure to players you like)
-      <br>Go to the Lineups tab and start generating lineups
-      <br>Export your lineups by clicking 'Download', modify the headers manually, and import them into DraftKings or
-      FanDuel
-    </div>
-    <div class="alert alert-danger">
-      When you download your lineups, in the downloaded .csv, change the headers to 'CPT, UTIL, UTIL, UTIL, UTIL, UTIL,
-      UTIL' or
-      you won't be able to upload it to DK.
-    </div>
-    <label>
-      <strong>
-        Import Your Player Pool
-      </strong>
-      <br> in the same format as the .csv download from DraftKings</label>
-    <br>
-    <input id="fileInput" type="file" @change="upload" v-bind:variant="theme">
+    <section v-if="!playersList">
+      <label>
+        <strong>
+          Import Your Player Pool (download .csv from DraftKings)
+        </strong>
+      </label>
+      <br>
+      <input id="fileInput" type="file" @change="upload" v-bind:variant="theme">
+    </section>
+
+
 
     <div class="body">
     </div>
     <b-tabs v-if="playersList">
       <b-tab title="All Players" active>
-        <b-button @click='savePlayersList' v-bind:variant="theme" download>
+        <b-button size="sm" class="float-right" @click='savePlayersList' variant='outline-dark' download>
           Download Player List
         </b-button>
         <b-table striped hover :items="playersList" :fields="playersListFields">
@@ -56,18 +47,19 @@
       </b-tab>
       <b-tab title="Players By Position">
         <div class="alert alert-light">
-          <b-btn variant="link" size="sm" v-for="position in Object.keys(positions)" @click="setPosition(position)">
+          <b-btn size="sm" variant="link" v-for="position in Object.keys(positions)" @click="setPosition(position)">
             {{position}}
           </b-btn>
         </div>
         <b-table striped hover :items="position" :fields="playersListFields" v-if="position.length"></b-table>
       </b-tab>
       <b-tab title="Lineups">
-
-        <b-btn @click="generate()">Generate</b-btn>
-        <b-button @click='save' v-bind:variant="theme" download>
+        <b-button @click='save' size="sm" variant="outline-dark" download>
           Download {{lineups.length}} Lineups
         </b-button>
+
+        <b-btn variant="outline-success" size="sm" class='float-right' @click="generate()">Generate</b-btn>
+
         <b-table striped hover :items="lineups" v-if="lineups.length"></b-table>
 
       </b-tab>

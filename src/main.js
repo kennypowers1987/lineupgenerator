@@ -13,10 +13,8 @@ import Spinner from 'vue-simple-spinner'
 import infiniteScroll from 'vue-infinite-scroll'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(faQuestionCircle)
-
 Vue.use(BootstrapVue)
 Vue.use(VueTruncate)
 Vue.use(VueLocalStorage)
@@ -28,10 +26,11 @@ Vue.component('vue-simple-spinner', Spinner)
 
 if (!Vue.localStorage.get('theme')) {
   Vue.localStorage.set('theme', 'dark')
-};
+}
 
-router.replace('/draftkings')
+router.replace('/CaptainMode')
 
+// eslint-disable-next-line no-unused-vars
 const app = new Vue({
   components: nav,
   router,
