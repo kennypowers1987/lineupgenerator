@@ -1,15 +1,25 @@
 <template>
-  <b-navbar toggleable="md" type="dark" v-bind:variant="theme" class="sticky">
-    <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+  <b-navbar
+    toggleable="md"
+    type="dark"
+    :variant="theme"
+    class="sticky"
+  >
+    <b-navbar-toggle target="nav_collapse" />
     <b-navbar-brand href="#">
       <!-- <img src="src/assets/logo.png"> -->
     </b-navbar-brand>
-    <b-collapse is-nav id="nav_collapse">
+    <b-collapse
+      id="nav_collapse"
+      is-nav
+    >
       <!-- <b-navbar-nav>
         <b-nav-item to="/DraftKings">DK NFL Lineup Generator</b-nav-item>
       </b-navbar-nav> -->
       <b-navbar-nav>
-        <b-nav-item to="/CaptainMode">DK Captain Mode Lineup Generator</b-nav-item>
+        <b-nav-item to="/CaptainMode">
+          DK Captain Mode Lineup Generator
+        </b-nav-item>
       </b-navbar-nav>
       <!-- <b-navbar-nav>
         <b-nav-item to="/Tiers">DK Tiers NFL Lineup Generator</b-nav-item>
@@ -34,8 +44,6 @@
 </template>
 <script>
   import Vue from "vue";
-  import VueLocalStorage from "vue-localstorage";
-  import { EventBus } from "../utils/myEventBus";
   export default {
     data: function () {
       return {
