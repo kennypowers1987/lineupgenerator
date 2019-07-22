@@ -1,34 +1,9 @@
 <template>
   <div class="parse">
-    <h5>
-      FanDuel NFL Lineup Generator
-      <b-btn
-        v-b-popover.hover="'Import the .csv for your contest  remove players you dislike, and start generating!'"
-        variant="danger"
-        title="Instructions"
-      >
-        ?
-      </b-btn>
-      <h5
-        class="float-right"
-        style="padding:10px;"
-      >
-        <a href="https://neocities.org/site/lineupgenerator">Donate if you win</a>
-      </h5>
-    </h5>
-    <div class="alert alert-info">
-      <br> Import the players list .csv for your contest below (download the .csv from DK/FanDuel)
-      <br>Remove players that you don't want in your player pool (exposure coming soon, for now, modify the .csv to
-      increase exposure to players you like)
-      <br>Go to the Lineups tab and start generating lineups
-      <br>Export your lineups by clicking 'Download' , modify the headers manually, and import them into DraftKings or
-      FanDuel
-    </div>
-    <div class="alert alert-danger">
-      When you download your lineups, in the downloaded .csv, change the headers to 'QB, RB, RB, WR, WR, WR, TE, FLEX,
-      DEF' or
-      you won't be able to upload it to FanDuel.
-    </div>
+    <common-header
+      site="Fanduel"
+      contest="NFL Classic"
+    />    
     <label>
       <strong>
         Import Your Player Pool

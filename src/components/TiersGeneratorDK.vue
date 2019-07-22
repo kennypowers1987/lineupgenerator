@@ -1,30 +1,9 @@
 <template>
   <div class="parse">
-    <h5>
-      DraftKings 'Tiers' NFL Lineup Generator
-      <b-btn
-        v-b-popover.hover="'Import the .csv for your contest , remove players you dislike, and start generating!'"
-        variant="danger"
-        title="Instructions"
-      >
-        ?
-      </b-btn>
-      <h5
-        class="float-right"
-        style="padding:10px;"
-      >
-        <a href="https://neocities.org/site/lineupgenerator">Donate if you win </a>
-      </h5>
-    </h5>
-    <div class="alert alert-info">
-      <br>Import the player list .csv for your contest below (download the .csv from DK/FanDuel)
-      <br>Remove players that you don't want in your player pool (exposure coming soon, for now, modify the .csv to
-      increase
-      exposure to players you like)
-      <br>Go to the Lineups tab and start generating lineups
-      <br>Export your lineups by clicking 'Download', modify the headers manually, and import them into DraftKings or
-      FanDuel
-    </div>
+    <common-header
+      site="DraftKings"
+      contest="Tiers"
+    />
     <label>
       <strong>
         Import Your Player Pool
@@ -111,11 +90,14 @@
           :fields="playersListFields"
         />
       </b-tab>
-      <b-tab title="Lineups">
-        <h5 v-if="lineups.length">
+      <b-tab
+        v-if="lineups.length" 
+        title="Lineups"
+      >
+        <h5>
           Exposure
         </h5>
-        <pre v-if="lineups.length">{{ exposures }}</pre>
+        <pre>{{ exposures }}</pre>
         <b-btn @click="generate()">
           Generate
         </b-btn>
@@ -127,11 +109,10 @@
           Download {{ lineups.length }} Lineups
         </b-button>
 
-        <h5 v-if="lineups.length">
+        <h5>
           Lineups
         </h5>
-        <b-table
-          v-if="lineups.length"
+        <b-table         
           striped
           hover
           :items="lineups"

@@ -1,19 +1,9 @@
 <template>
-  <div class="parse">
-    <h5>
-      DraftKings 'Captain Mode' Lineup Generator
-      <b-btn
-        v-b-popover.hover="'Import the .csv for your contest , remove players you dislike, navigate to the lineups tab and start generating!'"
-        size="sm"
-        variant="danger"
-        title="Instructions"
-      >
-        ?
-      </b-btn>
-      <!-- <h5 class="float-right" style="padding:10px;">
-        <a href="https://neocities.org/site/lineupgenerator">Donate if you win </a>
-      </h5>-->
-    </h5>
+  <div class="parse">   
+    <common-header
+      site="DraftKings"
+      contest="Captain Mode"
+    />
     <section v-if="!playersList">
       <label>
         <strong>Import Your Player Pool (download .csv from DraftKings)</strong>
@@ -62,7 +52,10 @@
           </template>
         </b-table>
       </b-tab>
-      <b-tab title="Players By Team">
+      <b-tab
+        v-if="team.length"
+        title="Players By Team"
+      >
         <div class="alert alert-light">
           <b-btn
             v-for="team in Object.keys(teams).sort()"
@@ -74,15 +67,17 @@
             {{ team }}
           </b-btn>
         </div>
-        <b-table
-          v-if="team.length"
+        <b-table          
           striped
           hover
           :items="team"
           :fields="playersListFields"
         />
       </b-tab>
-      <b-tab title="Players By Position">
+      <b-tab
+        v-if="position.length"
+        title="Players By Position"
+      >
         <div class="alert alert-light">
           <b-btn
             v-for="position in Object.keys(positions)"
@@ -95,7 +90,7 @@
           </b-btn>
         </div>
         <b-table
-          v-if="position.length"
+         
           striped
           hover
           :items="position"

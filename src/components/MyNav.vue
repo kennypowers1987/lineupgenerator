@@ -7,36 +7,94 @@
   >
     <b-navbar-toggle target="nav_collapse" />
     <b-navbar-brand href="#">
-      <!-- <img src="src/assets/logo.png"> -->
+      <img src="/src/assets/logo.png">
     </b-navbar-brand>
     <b-collapse
       id="nav_collapse"
       is-nav
     >
-      <!-- <b-navbar-nav>
-        <b-nav-item to="/DraftKings">DK NFL Lineup Generator</b-nav-item>
-      </b-navbar-nav> -->
+      <b-navbar-nav>
+        <b-nav-item to="/DraftKings">
+          DK NFL Lineup Generator
+        </b-nav-item>
+      </b-navbar-nav>
       <b-navbar-nav>
         <b-nav-item to="/CaptainMode">
           DK Captain Mode Lineup Generator
         </b-nav-item>
       </b-navbar-nav>
-      <!-- <b-navbar-nav>
-        <b-nav-item to="/Tiers">DK Tiers NFL Lineup Generator</b-nav-item>
-      </b-navbar-nav> -->
-      <!-- <b-navbar-nav>
-        <b-nav-item to="/FanDuel">FanDuel NFL Lineup Generator</b-nav-item>
-      </b-navbar-nav> -->
+      <b-navbar-nav>
+        <b-nav-item to="/Tiers">
+          DK Tiers NFL Lineup Generator
+        </b-nav-item>
+      </b-navbar-nav>
+      <b-navbar-nav>
+        <b-nav-item to="/FanDuel">
+          FanDuel NFL Lineup Generator
+        </b-nav-item>
+      </b-navbar-nav>
       <!-- <b-navbar-nav class="ml-auto">
-        <b-nav-item-dropdown text="Theme" right>
-          <b-dropdown-item href="#" @click="updateTheme('primary')" class="bg-primary">Primary</b-dropdown-item>
-          <b-dropdown-item href="#" @click="updateTheme('danger')" class="bg-danger">Danger</b-dropdown-item>
-          <b-dropdown-item href="#" @click="updateTheme('info')" class="bg-info">Info</b-dropdown-item>
-          <b-dropdown-item href="#" @click="updateTheme('warning')" class="bg-warning">Warning</b-dropdown-item>
-          <b-dropdown-item href="#" @click="updateTheme('dark')" class="bg-dark" style="color:white">Dark</b-dropdown-item>
-          <b-dropdown-item href="#" @click="updateTheme('secondary')" class="bg-secondary">Secondary</b-dropdown-item>
-          <b-dropdown-item href="#" @click="updateTheme('white')" class="bg-white">White</b-dropdown-item>
-          <b-dropdown-item href="#" @click="updateTheme('light')" class="bg-light">Light</b-dropdown-item>
+        <b-nav-item-dropdown
+          text="Theme"
+          right
+        >
+          <b-dropdown-item
+            href="#"
+            class="bg-primary"
+            @click="updateTheme('primary')"
+          >
+            Primary
+          </b-dropdown-item>
+          <b-dropdown-item
+            href="#"
+            class="bg-danger"
+            @click="updateTheme('danger')"
+          >
+            Danger
+          </b-dropdown-item>
+          <b-dropdown-item
+            href="#"
+            class="bg-info"
+            @click="updateTheme('info')"
+          >
+            Info
+          </b-dropdown-item>
+          <b-dropdown-item
+            href="#"
+            class="bg-warning"
+            @click="updateTheme('warning')"
+          >
+            Warning
+          </b-dropdown-item>
+          <b-dropdown-item
+            href="#"
+            class="bg-dark"
+            style="color:white"
+            @click="updateTheme('dark')"
+          >
+            Dark
+          </b-dropdown-item>
+          <b-dropdown-item
+            href="#"
+            class="bg-secondary"
+            @click="updateTheme('secondary')"
+          >
+            Secondary
+          </b-dropdown-item>
+          <b-dropdown-item
+            href="#"
+            class="bg-white"
+            @click="updateTheme('white')"
+          >
+            White
+          </b-dropdown-item>
+          <b-dropdown-item
+            href="#"
+            class="bg-light"
+            @click="updateTheme('light')"
+          >
+            Light
+          </b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav> -->
     </b-collapse>

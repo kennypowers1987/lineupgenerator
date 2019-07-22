@@ -1,36 +1,9 @@
 <template>
   <div class="parse">
-    <h5>
-      DraftKings NFL Lineup Generator
-      <b-btn
-        v-b-popover.hover="'Import the .csv for your contest, remove players you dislike, and start generating!'"
-        letiant="danger"
-        title="Instructions"
-      >
-        ?
-      </b-btn>
-      <h5
-        class="float-right"
-        style="padding:10px;"
-      >
-        <a href="https://neocities.org/site/lineupgenerator">Donate if you win</a>
-      </h5>
-    </h5>
-    <div class="alert alert-info">
-      <a href="https://lineupgenerator.net/Week1/Week1MainSlateFiltered.csv">
-        Download this weeks players (main slate)
-      </a>
-      <br> Then import the .csv below (If you are playing a different slate, download the .csv from DK/FanDuel)
-      <br>Remove players that you don't want in your player pool, increase exposure to players you like
-      <br>Go to the Lineups tab and start generating lineups
-      <br>Export your lineups by clicking 'Download', modify the headers manually, and import them into DraftKings or
-      FanDuel
-    </div>
-    <div class="alert alert-danger">
-      When you download your lineups, in the downloaded .csv, change the headers to 'QB, RB, RB, WR, WR, WR, TE, FLEX,
-      DST' or
-      you won't be able to upload it to DK.
-    </div>
+    <common-header
+      site="DraftKings"
+      contest="NFL Classic"
+    />
     <label>
       <strong>
         Import Your Player Pool
@@ -135,36 +108,38 @@
         />
       </b-tab>
       <b-tab title="Lineups">
-        <div class="row">
-          <!-- <label>Select Flex Position:</label> -->
-          <!-- <select v-model="selectedFlex">
-            <option>RB</option>
-            <option>WR</option>
-            <option>TE</option>
-          </select> -->
-        </div>
-        <b-btn @click="generate(); countClicks()">
-          Generate
-        </b-btn>
-        <b-button
-          :letiant="theme"
-          download
-          @click="save"
-        >
-          Download {{ lineups.length }} Lineups
-        </b-button>
-        <div
-          v-if="showSpinner"
-          class="row col-xs-12 alert alert-info"
-          style="margin:5px"
-        >
-          <vue-simple-spinner size="medium" />
-          <div class="col-xs-12">
-            Currently working on {{ generateCount - lineups.length }} lineups. Keep clicking
-            "Generate" to generate more. Modify
-            your player exposures to speed things up.
-          </div>
-        </div>
+        <b-row>
+          <b-col sm="1">
+            <b-form-input
+              v-model.number="progress.numberToGenerate"
+              type="number"
+              placeholder="Enter your name"
+            />
+          </b-col>
+          <b-col sm="1">
+            <b-btn @click="generate();">
+              Generate
+            </b-btn>
+          </b-col>
+          <b-col sm="3">
+            <b-button
+              :letiant="theme"
+              download
+              @click="save"
+            >
+              Download {{ lineups.length }} Lineups
+            </b-button>
+          </b-col>
+        </b-row>
+        <b-progress
+          v-if="showSpinner.on"
+          class="progress-bar"          
+          :value="progress.totalLineups"
+          :max="progress.numberToGenerate"
+          show-progress
+          animated
+        />
+
         <b-table
           v-if="lineups.length"
           striped
@@ -204,8 +179,14 @@ export default {
       positions: {},
       lineups: [],
       fullLineups: [],
-      showSpinner: false,
+      showSpinner: {
+        on: false
+      },
       generateCount: 0,
+      progress: {
+        numberToGenerate: 1,
+        totalLineups: 0
+      },
       exposure: {
         QB: [],
         RB: [],
@@ -232,9 +213,6 @@ export default {
     this.$bus.$on("theme-changed", () => {
       this.updateTheme();
     });
-    if (this.generateCount > this.lineups.length) {
-      this.showSpinner = true;
-    }
   },
   methods: {
     drawTeams () {
@@ -242,8 +220,7 @@ export default {
       delete this.teams["undefined"];
     },
     drawPositions () {
-      this.positions = this.groupBy(this.playersList, "Roster Position");
-      delete this.positions["undefined"];
+      this.positions = this.groupBy(this.playersList, "Position");
     },
     calculateExposures () {
       var that = this;
@@ -322,7 +299,7 @@ export default {
             that.drawPositions();
           },
           error (errors) {
-            console.log('error', errors)
+            console.warn('error', errors)
           }
         })
       }
@@ -365,16 +342,9 @@ export default {
     setPosition (pos) {
       this.position = this.positions[pos];
     },
-    countClicks () {
-      this.generateCount = this.generateCount + 1;
-    },
+
     generate () {
-      if (this.generateCount > this.lineups.length) {
-        this.showSpinner = true;
-      }
-      else {
-        this.showSpinner = false;
-      }
+      this.showSpinner.on = true;
       let that = this;
       let playerIds = [];
       that.stackCount = 0;
@@ -460,7 +430,6 @@ export default {
         if (index == (6 || 7 || 8 || 9 || 10)) {
           that.selectedFlex = 'RB'
         }
-        console.log("selected flex position " + that.selectedFlex)
         index = Math.floor(Math.random() * Math.floor(that.positions[that.selectedFlex].length));
         that.lineup.FLEX = that.positions[that.selectedFlex][index];
         playerIds.push(that.lineup.FLEX.ID);
@@ -502,24 +471,17 @@ export default {
           parseInt(that.lineup.TE.Salary) +
           parseInt(that.lineup.FLEX.Salary) +
           parseInt(that.lineup.DST.Salary);
-        //console.log('$' + totalSalary)
 
         if (checkDupes.length < 9) {
-          console.log('dupes exist, restarting ', checkDupes.length);
-          console.log(that.lineup.QB.Name)
           return setTimeout(() => {
             that.generate();
           }, 0);
 
         } else if (totalSalary < 48900) {
-          console.log('salary cap expectations not met ', totalSalary);
-          console.log(that.lineup.QB.Name)
           return setTimeout(() => {
             that.generate();
           }, 0);
         } else if (totalSalary > 50000) {
-          console.log('salary cap expectations not met ', totalSalary);
-          console.log(that.lineup.QB.Name)
           return setTimeout(() => {
             that.generate();
           }, 0);
@@ -552,6 +514,20 @@ export default {
           }
 
           that.lineups.unshift(lineup);
+          setTimeout(() => {
+            that.progress.totalLineups++;
+            if (that.progress.totalLineups >= that.progress.numberToGenerate) {
+              that.progress.totalLineups = 0;
+              return that.showSpinner.on = false;
+            } else {
+              setTimeout(() => {
+                that.generate();
+              }, 0);
+            }
+          }, 0);
+
+
+
           lineup = {
             'QB': that.lineup.QB.ID,
             'RB1': that.lineup.RB1.ID,
@@ -564,16 +540,12 @@ export default {
             'DST': that.lineup.DST.ID,
           };
           that.fullLineups.unshift(lineup);
-          if (that.generateCount > that.lineups.length) {
-            that.showSpinner = true;
-          }
-          else {
-            that.showSpinner = false;
-          }
         }
       }
       getQB();
+
     }
+
   }
 }
 
@@ -603,5 +575,9 @@ export default {
 .parse {
   margin: 3%;
   font-size: 12px;
+}
+
+.progress-bar {
+  margin-top:10px !important;
 }
 </style>
