@@ -9,13 +9,22 @@
         Import Your Player Pool
       </strong>
       <br> in the same format as the .csv download from DraftKings</label>
-    <br>
-    <input
-      id="fileInput"
-      type="file"
-      :letiant="theme"
-      @change="upload"
-    >
+    <br>    
+    <div>
+      <!-- Styled -->
+      <b-form-file
+        id="fileInput"
+        v-model="file"
+        :state="Boolean(file)"
+        placeholder="Choose a file..."
+        drop-placeholder="Drop file here..."
+        accept=".csv"
+        @input="upload"
+      />
+      <div class="mt-3">
+        Selected file: {{ file ? file.name : '' }}
+      </div>
+    </div>
     <div class="body" />
     <b-tabs v-if="playersList">
       <b-tab
@@ -64,7 +73,7 @@
               Increase Exposure
             </b-button>
             <input type="checkbox">
-          </template>
+          </template>          
         </b-table>
       </b-tab>
       <b-tab title="Players By Team">
@@ -189,6 +198,7 @@ export default {
       playersList: null,
       theme: Vue.localStorage.get("theme"),
       playersListFields: [],
+      file: {},
       team: {},
       teams: {},
       position: {},
@@ -300,7 +310,7 @@ export default {
     },
     upload () {
       let that = this;
-      const fileToLoad = event.target.files[0]
+      let fileToLoad = that.file;
       const reader = new FileReader()
       reader.onload = fileLoadedEvent => {
         Papa.parse(fileLoadedEvent.target.result, {
