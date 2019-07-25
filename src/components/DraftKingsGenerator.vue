@@ -109,31 +109,47 @@
       </b-tab>
       <b-tab title="Lineups">
         <b-row>
-          <b-col sm="1">
-            <b-form-input
-              v-model.number="progress.numberToGenerate"
-              type="number"
-              placeholder="Enter your name"
-            />
+          <b-col sm="2">
+            <b-input-group prepend="#">
+              <b-form-input
+                v-model.number="progress.numberToGenerate"
+                type="number"
+                placeholder="Enter your name"
+              />
+              <b-input-group-append>
+                <b-btn
+                  :variant="theme" 
+                  @click="generate()"
+                >
+                  Generate
+                </b-btn>
+              </b-input-group-append>
+            </b-input-group>
           </b-col>
-          <b-col sm="1">
-            <b-btn @click="generate();">
-              Generate
-            </b-btn>
-          </b-col>
-          <b-col sm="3">
+          <b-col
+            sm="10"
+          >
             <b-button
-              :letiant="theme"
+              :variant="theme"
+              class="float-right"
               download
               @click="save"
             >
               Download {{ lineups.length }} Lineups
             </b-button>
-          </b-col>
+            <b-button
+              variant="danger"
+              class="float-right"
+              download
+              @click="clearLineups"
+            >
+              Clear
+            </b-button>
+          </b-col>          
         </b-row>
         <b-progress
           v-if="showSpinner.on"
-          class="progress-bar"          
+          class="generate-progress-bar"
           :value="progress.totalLineups"
           :max="progress.numberToGenerate"
           show-progress
@@ -222,6 +238,10 @@ export default {
     drawPositions () {
       this.positions = this.groupBy(this.playersList, "Position");
     },
+    clearLineups () {
+      this.lineups = [];
+      this.fulllineups = [];
+    },
     calculateExposures () {
       var that = this;
       let qbCount = 0;
@@ -307,12 +327,9 @@ export default {
     },
     save () {
       const blob = new Blob([this.parseJSONtoCSV(this.fullLineups)], {
-        type: 'text/csv'
-      })
-      FileSaver.saveAs(blob, 'DK' + new Date() + '.csv')
-      alert(
-        "In the downloaded .csv, change the headers to 'QB, RB, RB, WR, WR, WR, TE, FLEX, DST' or you won't be able to upload it to DraftKings."
-      )
+          type: 'text/csv'
+        })      
+      FileSaver.saveAs(blob, 'DK' + new Date() + '.csv');
     },
     savePlayersList () {
       const blob = new Blob([this.parseJSONtoCSV(this.playersList)], {
@@ -321,8 +338,11 @@ export default {
       FileSaver.saveAs(blob, 'DK' + new Date() + '.csv')
 
     },
-    parseJSONtoCSV (table) {
-      return Papa.unparse(table)
+    parseJSONtoCSV (table) {      
+      return Papa.unparse(table, {
+          header: true,
+          skipEmptyLines: true          
+        })
     },
     updateTheme () {
       this.theme = Vue.localStorage.get("theme");
@@ -518,6 +538,7 @@ export default {
             that.progress.totalLineups++;
             if (that.progress.totalLineups >= that.progress.numberToGenerate) {
               that.progress.totalLineups = 0;
+              console.log(that.lineups);
               return that.showSpinner.on = false;
             } else {
               setTimeout(() => {
@@ -577,7 +598,7 @@ export default {
   font-size: 12px;
 }
 
-.progress-bar {
-  margin-top:10px !important;
+.generate-progress-bar {
+  margin-top: 10px !important;
 }
 </style>
