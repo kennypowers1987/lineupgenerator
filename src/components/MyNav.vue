@@ -6,8 +6,11 @@
     class="sticky"
   >
     <b-navbar-toggle target="nav_collapse" />
-    <b-navbar-brand href="#">
-      <img src="/src/assets/logo.png">
+    <b-navbar-brand 
+      href="#" 
+      class="logo"
+    >
+      lineupgenerator.net
     </b-navbar-brand>
     <b-collapse
       id="nav_collapse"
@@ -123,5 +126,11 @@
     width: 100%;
     top: 0;
     z-index: 1000;
+  }
+  .nav-link {
+    text-decoration: underline !important;
+  }
+  .logo{
+    font-size: x-large;
   }
 </style>
