@@ -33,7 +33,7 @@
       >
         <span class="float-right">
           <b-button
-            :letiant="theme"
+            :variant="theme"
             download
             class="badge badge-info"
             @click="savePlayersList"
@@ -81,7 +81,7 @@
           <b-btn
             v-for="team in Object.keys(teams).sort()"
             :key="team.Team"
-            letiant="link"
+            variant="link"
             size="sm"
             @click="setTeam(team)"
           >
@@ -101,7 +101,7 @@
           <b-btn
             v-for="position in Object.keys(positions)"
             :key="position.Position"
-            letiant="link"
+            variant="link"
             size="sm"
             @click="setPosition(position)"
           >
@@ -123,7 +123,7 @@
               <b-form-input
                 v-model.number="progress.numberToGenerate"
                 type="number"
-                placeholder="Enter your name"
+                placeholder="enter the number of lineups to generate"
               />
               <b-input-group-append>
                 <b-btn
@@ -210,7 +210,7 @@ export default {
       },
       generateCount: 0,
       progress: {
-        numberToGenerate: 1,
+        numberToGenerate: 10,
         totalLineups: 0
       },
       exposure: {

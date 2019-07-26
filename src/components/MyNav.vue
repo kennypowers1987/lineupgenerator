@@ -23,7 +23,7 @@
       </b-navbar-nav>
       <b-navbar-nav>
         <b-nav-item to="/CaptainMode">
-          DK Captain Mode Lineup Generator
+          DK Showdown Lineup Generator
         </b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav>

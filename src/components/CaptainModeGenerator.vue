@@ -1,20 +1,23 @@
 <template>
-  <div class="parse">   
+  <div class="parse">
     <common-header
       site="DraftKings"
-      contest="Captain Mode"
+      contest="Showdown"
     />
     <section v-if="!playersList">
       <label>
         <strong>Import Your Player Pool (download .csv from DraftKings)</strong>
       </label>
       <br>
-      <input
+      <b-form-file
         id="fileInput"
-        type="file"
-        :variant="theme"
-        @change="upload"
-      >
+        v-model="file"
+        :state="Boolean(file)"
+        placeholder="Choose a file..."
+        drop-placeholder="Drop file here..."
+        accept=".csv"
+        @input="upload"
+      />
     </section>
 
     <div class="body" />
@@ -67,7 +70,7 @@
             {{ team }}
           </b-btn>
         </div>
-        <b-table          
+        <b-table
           striped
           hover
           :items="team"
@@ -90,7 +93,6 @@
           </b-btn>
         </div>
         <b-table
-         
           striped
           hover
           :items="position"
@@ -98,23 +100,46 @@
         />
       </b-tab>
       <b-tab title="Lineups">
-        <b-button
-          size="sm"
-          variant="outline-dark"
-          download
-          @click="save"
-        >
-          Download {{ lineups.length }} Lineups
-        </b-button>
+        <b-input-group prepend="#">
+          <b-form-input
+            v-model.number="progress.numberToGenerate"
+            type="number"
+            placeholder="enter the number of lineups to generate"
+          />
+          <b-input-group-append>
+            <b-btn
+              :variant="theme"
+              @click="generate()"
+            >
+              Generate
+            </b-btn>
+          </b-input-group-append>
+          <b-button
+            :variant="theme"
+            class="float-right"
+            download
+            @click="save"
+          >
+            Download {{ lineups.length }} Lineups
+          </b-button>
+          <b-button
+            variant="danger"
+            class="float-right"
+            download
+            @click="clearLineups"
+          > 
+            Clear Lineups
+          </b-button>
+        </b-input-group>
 
-        <b-btn
-          variant="outline-success"
-          size="sm"
-          class="float-right"
-          @click="generate()"
-        >
-          Generate
-        </b-btn>
+        <b-progress
+          v-if="showSpinner.on"
+          class="generate-progress-bar"
+          :value="progress.totalLineups"
+          :max="progress.numberToGenerate"
+          show-progress
+          animated
+        />
 
         <b-table
           v-if="lineups.length"
@@ -155,6 +180,14 @@ export default {
       positions: {},
       lineups: [],
       fullLineups: [],
+      progress: {
+        numberToGenerate: 1,
+        totalLineups: 0
+      },
+      showSpinner: {
+        on: false
+      },
+      file: {},
       lineup: {
         CPT: null,
         UTIL1: null,
@@ -174,11 +207,11 @@ export default {
   methods: {
     drawTeams () {
       this.teams = this.groupBy(this.playersList, "TeamAbbrev");
-      delete this.teams["undefined"];      
+      delete this.teams["undefined"];
     },
     drawPositions () {
       this.positions = this.groupBy(this.playersList, "Roster Position");
-      delete this.positions["undefined"];     
+      delete this.positions["undefined"];
     },
     removePlayer (player) {
       var id = player.ID;
@@ -191,7 +224,7 @@ export default {
     },
     upload () {
       var that = this;
-      const fileToLoad = event.target.files[0];
+      const fileToLoad = this.file;
       const reader = new FileReader();
       reader.onload = fileLoadedEvent => {
         Papa.parse(fileLoadedEvent.target.result, {
@@ -254,7 +287,12 @@ export default {
     setPosition (pos) {
       this.position = this.positions[pos];
     },
+    clearLineups () {
+      this.lineups = [];
+      this.fulllineups = [];
+    },
     generate () {
+      this.showSpinner.on = true;
       var that = this;
       var playerIds = [];
       var playerNames = [];
@@ -408,6 +446,20 @@ export default {
             "Total Salary": totalSalary
           };
           that.lineups.unshift(lineup);
+
+          setTimeout(() => {
+            that.progress.totalLineups++;
+            if (that.progress.totalLineups >= that.progress.numberToGenerate) {
+              that.progress.totalLineups = 0;
+              console.log(that.lineups);
+              return that.showSpinner.on = false;
+            } else {
+              setTimeout(() => {
+                that.generate();
+              }, 0);
+            }
+          }, 0);
+
           lineup = {
             CPT: that.lineup.CPT.ID,
             UTIL1: that.lineup.UTIL1.ID,

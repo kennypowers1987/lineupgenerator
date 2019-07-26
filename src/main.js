@@ -2,7 +2,7 @@ import Vue from "vue";
 import BootstrapVue from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
-import "./styles/test.scss";
+import "./styles/globals.scss";
 import nav from "./components/MyNav";
 import router from "./utils/myRouter";
 import VueTruncate from "vue-truncate-filter";
