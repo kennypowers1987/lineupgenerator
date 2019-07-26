@@ -297,71 +297,59 @@ export default {
       var playerIds = [];
       var playerNames = [];
 
-      function getCaptain () {
-        //console.log('getting CPT')
+      function getCaptain () {        
         let index = Math.floor(
           Math.random() * Math.floor(that.positions["CPT"].length - 1)
-        );
-        //that.lineup.QB = (({ Name, Salary, Position }) => ({ Name, Salary, Position }))(that.positions['QB'][index])
+        );       
         that.lineup.CPT = that.positions["CPT"][index];
         playerIds.push(that.lineup.CPT.ID);
         playerNames.push(that.lineup.CPT.Name);
         getUTIL1();
       }
 
-      function getUTIL1 () {
-        //console.log('getting UTIL1')
+      function getUTIL1 () {        
         let index = Math.floor(
           Math.random() * Math.floor(that.positions["UTIL"].length - 1)
         );
         that.lineup.UTIL1 = that.positions["UTIL"][index];
         playerIds.push(that.lineup.UTIL1.ID);
-        playerNames.push(that.lineup.UTIL1.Name);
-        console.log(that.lineup);
+        playerNames.push(that.lineup.UTIL1.Name);      
         getUTIL2();
       }
-      function getUTIL2 () {
-        //console.log('getting UTIL2')
+      function getUTIL2 () {       
         let index = Math.floor(
           Math.random() * Math.floor(that.positions["UTIL"].length - 1)
         );
         that.lineup.UTIL2 = that.positions["UTIL"][index];
         playerIds.push(that.lineup.UTIL2.ID);
-        playerNames.push(that.lineup.UTIL2.Name);
-        console.log(that.lineup);
+        playerNames.push(that.lineup.UTIL2.Name);       
         getUTIL3();
       }
-      function getUTIL3 () {
-        //console.log('getting UTIL3')
+      function getUTIL3 () {       
         let index = Math.floor(
           Math.random() * Math.floor(that.positions["UTIL"].length - 1)
         );
         that.lineup.UTIL3 = that.positions["UTIL"][index];
         playerIds.push(that.lineup.UTIL3.ID);
-        playerNames.push(that.lineup.UTIL3.Name);
-        console.log(that.lineup);
+        playerNames.push(that.lineup.UTIL3.Name);    
         getUTIL4();
       }
-      function getUTIL4 () {
-        //console.log('getting UTIL4')
+      function getUTIL4 () {        
         let index = Math.floor(
           Math.random() * Math.floor(that.positions["UTIL"].length - 1)
         );
         that.lineup.UTIL4 = that.positions["UTIL"][index];
         playerIds.push(that.lineup.UTIL4.ID);
-        playerNames.push(that.lineup.UTIL4.Name);
-        console.log(that.lineup);
+        playerNames.push(that.lineup.UTIL4.Name);        
         getUTIL5();
       }
-      function getUTIL5 () {
-        //console.log('getting UTIL5')
+      function getUTIL5 () {        
         let index = Math.floor(
           Math.random() * Math.floor(that.positions["UTIL"].length - 1)
         );
         that.lineup.UTIL5 = that.positions["UTIL"][index];
         playerIds.push(that.lineup.UTIL5.ID);
-        playerNames.push(that.lineup.UTIL5.Name);
-        console.log(that.lineup);
+        playerNames.push(that.lineup.UTIL5.Name);        
         validateLineup();
       }
 
@@ -386,21 +374,16 @@ export default {
           parseInt(that.lineup.UTIL2.Salary) +
           parseInt(that.lineup.UTIL3.Salary) +
           parseInt(that.lineup.UTIL4.Salary) +
-          parseInt(that.lineup.UTIL5.Salary);
-
-        console.log("$" + totalSalary);
-        if (checkDupes.length < 6) {
-          console.log("dupes exist, restarting ", checkDupes.length);
+          parseInt(that.lineup.UTIL5.Salary);      
+        if (checkDupes.length < 6) {         
           return setTimeout(() => {
             that.generate();
           }, 0);
-        } else if (totalSalary < 49000) {
-          console.log("salary cap expectations not met ", totalSalary);
+        } else if (totalSalary < 49000) {        
           return setTimeout(() => {
             that.generate();
           }, 0);
-        } else if (totalSalary > 50000) {
-          console.log("salary cap expectations not met ", totalSalary);
+        } else if (totalSalary > 50000) {          
           return setTimeout(() => {
             that.generate();
           }, 0);
@@ -450,8 +433,7 @@ export default {
           setTimeout(() => {
             that.progress.totalLineups++;
             if (that.progress.totalLineups >= that.progress.numberToGenerate) {
-              that.progress.totalLineups = 0;
-              console.log(that.lineups);
+              that.progress.totalLineups = 0;             
               return that.showSpinner.on = false;
             } else {
               setTimeout(() => {
