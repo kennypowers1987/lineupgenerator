@@ -9,7 +9,7 @@
         Import Your Player Pool
       </strong>
       <br> in the same format as the .csv download from DraftKings</label>
-    <br>    
+    <br>
     <div>
       <!-- Styled -->
       <b-form-file
@@ -43,14 +43,11 @@
           <b-button class="badge badge-danger">
             Remove Selected Players
           </b-button>
-          <b-button class="badge badge-dark">
-            Increase Selected Exposure
-          </b-button>
         </span>
         <b-table
           striped
           hover
-          :items="playersList"
+          :items="getUnique(playersList, 'ID')"
           :fields="playersListFields"
           style="font-size: small;"
         >
@@ -72,8 +69,7 @@
             >
               Increase Exposure
             </b-button>
-            <input type="checkbox">
-          </template>          
+          </template>
         </b-table>
       </b-tab>
       <b-tab title="Players By Team">
@@ -127,7 +123,7 @@
               />
               <b-input-group-append>
                 <b-btn
-                  :variant="theme" 
+                  :variant="theme"
                   @click="generate()"
                 >
                   Generate
@@ -135,9 +131,7 @@
               </b-input-group-append>
             </b-input-group>
           </b-col>
-          <b-col
-            sm="10"
-          >
+          <b-col sm="10">
             <b-button
               :variant="theme"
               class="float-right"
@@ -154,7 +148,7 @@
             >
               Clear
             </b-button>
-          </b-col>          
+          </b-col>
         </b-row>
         <b-progress
           v-if="showSpinner.on"
@@ -287,8 +281,8 @@ export default {
 
       });
       this.playersList.forEach(function (player) {
-        if (player.Exposure && player.Exposure.length > 0) {
-          player.Exposure = player.Exposure.toFixed(3);
+        if (player.Exposure) {
+          player.Exposure = parseFloat(player.Exposure).toFixed(3);
         }
       }, 0);
     },
@@ -304,8 +298,9 @@ export default {
     },
     addPlayer (player) {
       this.playersList.push(player);
-      this.drawTeams();
-      this.drawPositions();
+      this.teams = this.groupBy(this.playersList, "TeamAbbrev");
+      delete this.teams["undefined"];
+      this.positions = this.groupBy(this.playersList, "Position");
       this.calculateExposures();
     },
     upload () {
@@ -321,7 +316,7 @@ export default {
             that.playersListFields = Object.keys(that.playersList[0]).map(str => {
               return {
                 key: str,
-                sortable: false
+                sortable: true
               }
             });
             that.playersListFields.push('delete_btn');
@@ -337,8 +332,8 @@ export default {
     },
     save () {
       const blob = new Blob([this.parseJSONtoCSV(this.fullLineups)], {
-          type: 'text/csv'
-        })      
+        type: 'text/csv'
+      })
       FileSaver.saveAs(blob, 'DK' + new Date() + '.csv');
     },
     savePlayersList () {
@@ -348,12 +343,21 @@ export default {
       FileSaver.saveAs(blob, 'DK' + new Date() + '.csv')
 
     },
-    parseJSONtoCSV (table) {      
+    parseJSONtoCSV (table) {
       return Papa.unparse(table, {
-          header: true,
-          skipEmptyLines: true          
-        })
+        header: true,
+        skipEmptyLines: true
+      })
     },
+    getUnique (arr, comp) {
+      const unique = arr
+        .map(e => e[comp])
+        // store the keys of the unique objects
+        .map((e, i, final) => final.indexOf(e) === i && i)
+        // eliminate the dead keys & store unique objects
+        .filter(e => arr[e]).map(e => arr[e]);
+      return unique;
+    },    
     updateTheme () {
       this.theme = Vue.localStorage.get("theme");
     },
@@ -516,12 +520,7 @@ export default {
             that.generate();
           }, 0);
         }
-        else if (that.lineup.QB.Name === ("Patrick Mahomes" || "Jared Goff" || "Nick Mullens" || "Derek Carr") && that.stackCount < 3) {
-          return setTimeout(() => {
-            that.generate();
-          }, 0);
-        }
-        else if (that.stackCount < 1) {
+        else if (that.stackCount < 3) {
           return setTimeout(() => {
             that.generate();
           }, 0);
