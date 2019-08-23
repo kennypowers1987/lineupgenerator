@@ -52,7 +52,15 @@ Vue.component("common-header", {
                    <a href="https://neocities.org/site/lineupgenerator">Donate if you win </a>
                    </h5>
                 </h5>
-              </div>`
+                <label>
+                  <strong>
+                    Import Your Player Pool
+                  </strong>
+                  <br> in the same format as the .csv download from {{site}}
+                </label>
+              <br>
+              </div>              
+              `
 });
 
 // eslint-disable-next-line no-unused-vars

@@ -5,12 +5,7 @@
       contest="Showdown"
     />
     <section v-if="!playersList">
-      <label>
-        <strong>Import Your Player Pool (download .csv from DraftKings)</strong>
-      </label>
-      <br>
-      <b-form-file
-        id="fileInput"
+      <b-form-file       
         v-model="file"
         :state="Boolean(file)"
         placeholder="Choose a file..."
@@ -170,7 +165,7 @@ export default {
   name: "Captainmode",
   data () {
     return {
-      selectedUTIL: "RB",
+      selectedFLEX: "RB",
       playersList: null,
       theme: Vue.localStorage.get("theme"),
       playersListFields: [],
@@ -190,11 +185,11 @@ export default {
       file: {},
       lineup: {
         CPT: null,
-        UTIL1: null,
-        UTIL2: null,
-        UTIL3: null,
-        UTIL4: null,
-        UTIL5: null,
+        FLEX1: null,
+        FLEX2: null,
+        FLEX3: null,
+        FLEX4: null,
+        FLEX5: null,
         "Total Salary": null
       }
     };
@@ -257,7 +252,7 @@ export default {
       });
       FileSaver.saveAs(blob, "DK" + new Date() + ".csv");
       alert(
-        "In the downloaded .csv, change the headers to 'CPT, UTIL, UTIL, UTIL, UTIL, UTIL, UTIL' or you won't be able to upload it to DraftKings."
+        "In the downloaded .csv, change the headers to 'CPT, FLEX, FLEX, FLEX, FLEX, FLEX, FLEX' or you won't be able to upload it to DraftKings."
       );
     },
     savePlayersList () {
@@ -304,52 +299,52 @@ export default {
         that.lineup.CPT = that.positions["CPT"][index];
         playerIds.push(that.lineup.CPT.ID);
         playerNames.push(that.lineup.CPT.Name);
-        getUTIL1();
+        getFLEX1();
       }
 
-      function getUTIL1 () {        
+      function getFLEX1 () {        
         let index = Math.floor(
-          Math.random() * Math.floor(that.positions["UTIL"].length - 1)
+          Math.random() * Math.floor(that.positions["FLEX"].length - 1)
         );
-        that.lineup.UTIL1 = that.positions["UTIL"][index];
-        playerIds.push(that.lineup.UTIL1.ID);
-        playerNames.push(that.lineup.UTIL1.Name);      
-        getUTIL2();
+        that.lineup.FLEX1 = that.positions["FLEX"][index];
+        playerIds.push(that.lineup.FLEX1.ID);
+        playerNames.push(that.lineup.FLEX1.Name);      
+        getFLEX2();
       }
-      function getUTIL2 () {       
+      function getFLEX2 () {       
         let index = Math.floor(
-          Math.random() * Math.floor(that.positions["UTIL"].length - 1)
+          Math.random() * Math.floor(that.positions["FLEX"].length - 1)
         );
-        that.lineup.UTIL2 = that.positions["UTIL"][index];
-        playerIds.push(that.lineup.UTIL2.ID);
-        playerNames.push(that.lineup.UTIL2.Name);       
-        getUTIL3();
+        that.lineup.FLEX2 = that.positions["FLEX"][index];
+        playerIds.push(that.lineup.FLEX2.ID);
+        playerNames.push(that.lineup.FLEX2.Name);       
+        getFLEX3();
       }
-      function getUTIL3 () {       
+      function getFLEX3 () {       
         let index = Math.floor(
-          Math.random() * Math.floor(that.positions["UTIL"].length - 1)
+          Math.random() * Math.floor(that.positions["FLEX"].length - 1)
         );
-        that.lineup.UTIL3 = that.positions["UTIL"][index];
-        playerIds.push(that.lineup.UTIL3.ID);
-        playerNames.push(that.lineup.UTIL3.Name);    
-        getUTIL4();
+        that.lineup.FLEX3 = that.positions["FLEX"][index];
+        playerIds.push(that.lineup.FLEX3.ID);
+        playerNames.push(that.lineup.FLEX3.Name);    
+        getFLEX4();
       }
-      function getUTIL4 () {        
+      function getFLEX4 () {        
         let index = Math.floor(
-          Math.random() * Math.floor(that.positions["UTIL"].length - 1)
+          Math.random() * Math.floor(that.positions["FLEX"].length - 1)
         );
-        that.lineup.UTIL4 = that.positions["UTIL"][index];
-        playerIds.push(that.lineup.UTIL4.ID);
-        playerNames.push(that.lineup.UTIL4.Name);        
-        getUTIL5();
+        that.lineup.FLEX4 = that.positions["FLEX"][index];
+        playerIds.push(that.lineup.FLEX4.ID);
+        playerNames.push(that.lineup.FLEX4.Name);        
+        getFLEX5();
       }
-      function getUTIL5 () {        
+      function getFLEX5 () {        
         let index = Math.floor(
-          Math.random() * Math.floor(that.positions["UTIL"].length - 1)
+          Math.random() * Math.floor(that.positions["FLEX"].length - 1)
         );
-        that.lineup.UTIL5 = that.positions["UTIL"][index];
-        playerIds.push(that.lineup.UTIL5.ID);
-        playerNames.push(that.lineup.UTIL5.Name);        
+        that.lineup.FLEX5 = that.positions["FLEX"][index];
+        playerIds.push(that.lineup.FLEX5.ID);
+        playerNames.push(that.lineup.FLEX5.Name);        
         validateLineup();
       }
 
@@ -370,11 +365,11 @@ export default {
         var checkDupes = removeDuplicate(playerNames);
         var totalSalary =
           parseInt(that.lineup.CPT.Salary) +
-          parseInt(that.lineup.UTIL1.Salary) +
-          parseInt(that.lineup.UTIL2.Salary) +
-          parseInt(that.lineup.UTIL3.Salary) +
-          parseInt(that.lineup.UTIL4.Salary) +
-          parseInt(that.lineup.UTIL5.Salary);      
+          parseInt(that.lineup.FLEX1.Salary) +
+          parseInt(that.lineup.FLEX2.Salary) +
+          parseInt(that.lineup.FLEX3.Salary) +
+          parseInt(that.lineup.FLEX4.Salary) +
+          parseInt(that.lineup.FLEX5.Salary);      
         if (checkDupes.length < 6) {         
           return setTimeout(() => {
             that.generate();
@@ -396,36 +391,36 @@ export default {
               that.lineup.CPT["TeamAbbrev"] +
               " " +
               that.lineup.CPT["Salary"],
-            UTIL1:
-              that.lineup.UTIL1.Name +
+            FLEX1:
+              that.lineup.FLEX1.Name +
               " " +
-              that.lineup.UTIL1["TeamAbbrev"] +
+              that.lineup.FLEX1["TeamAbbrev"] +
               " " +
-              that.lineup.UTIL1["Salary"],
-            UTIL2:
-              that.lineup.UTIL2.Name +
+              that.lineup.FLEX1["Salary"],
+            FLEX2:
+              that.lineup.FLEX2.Name +
               " " +
-              that.lineup.UTIL2["TeamAbbrev"] +
+              that.lineup.FLEX2["TeamAbbrev"] +
               " " +
-              that.lineup.UTIL2["Salary"],
-            UTIL3:
-              that.lineup.UTIL3.Name +
+              that.lineup.FLEX2["Salary"],
+            FLEX3:
+              that.lineup.FLEX3.Name +
               " " +
-              that.lineup.UTIL3["TeamAbbrev"] +
+              that.lineup.FLEX3["TeamAbbrev"] +
               " " +
-              that.lineup.UTIL3["Salary"],
-            UTIL4:
-              that.lineup.UTIL4.Name +
+              that.lineup.FLEX3["Salary"],
+            FLEX4:
+              that.lineup.FLEX4.Name +
               " " +
-              that.lineup.UTIL4["TeamAbbrev"] +
+              that.lineup.FLEX4["TeamAbbrev"] +
               " " +
-              that.lineup.UTIL4["Salary"],
-            UTIL5:
-              that.lineup.UTIL5.Name +
+              that.lineup.FLEX4["Salary"],
+            FLEX5:
+              that.lineup.FLEX5.Name +
               " " +
-              that.lineup.UTIL5["TeamAbbrev"] +
+              that.lineup.FLEX5["TeamAbbrev"] +
               " " +
-              that.lineup.UTIL5["Salary"],
+              that.lineup.FLEX5["Salary"],
             "Total Salary": totalSalary
           };
           that.lineups.unshift(lineup);
@@ -444,11 +439,11 @@ export default {
 
           lineup = {
             CPT: that.lineup.CPT.ID,
-            UTIL1: that.lineup.UTIL1.ID,
-            UTIL2: that.lineup.UTIL2.ID,
-            UTIL3: that.lineup.UTIL3.ID,
-            UTIL4: that.lineup.UTIL4.ID,
-            UTIL5: that.lineup.UTIL5.ID
+            FLEX1: that.lineup.FLEX1.ID,
+            FLEX2: that.lineup.FLEX2.ID,
+            FLEX3: that.lineup.FLEX3.ID,
+            FLEX4: that.lineup.FLEX4.ID,
+            FLEX5: that.lineup.FLEX5.ID
           };
           that.fullLineups.unshift(lineup);
         }
@@ -462,7 +457,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .body {
-  display: UTIL;
+  display: FLEX;
   justify-content: center;
   margin-top: 30px;
 }

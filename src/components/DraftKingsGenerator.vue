@@ -4,16 +4,10 @@
       site="DraftKings"
       contest="NFL Classic"
     />
-    <label>
-      <strong>
-        Import Your Player Pool
-      </strong>
-      <br> in the same format as the .csv download from DraftKings</label>
-    <br>
     <div>
       <!-- Styled -->
       <b-form-file
-        id="fileInput"
+        
         v-model="file"
         :state="Boolean(file)"
         placeholder="Choose a file..."

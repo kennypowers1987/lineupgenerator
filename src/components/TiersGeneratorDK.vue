@@ -4,18 +4,14 @@
       site="DraftKings"
       contest="Tiers"
     />
-    <label>
-      <strong>
-        Import Your Player Pool
-      </strong>
-      <br> in the same format as the .csv download from DraftKings</label>
-    <br>
-    <input
-      id="fileInput"
-      type="file"
-      :variant="theme"
-      @change="upload"
-    >
+    <b-form-file      
+      v-model="file"
+      :state="Boolean(file)"
+      placeholder="Choose a file..."
+      drop-placeholder="Drop file here..."
+      accept=".csv"
+      @input="upload"
+    />
 
     <div class="body" />
     <b-tabs v-if="playersList">
@@ -149,6 +145,7 @@ export default {
       positions: {},
       lineups: [],
       fullLineups: [],
+      file : {},
       lineup: {
         'T1': null,
         'T2': null,
@@ -188,7 +185,7 @@ export default {
     },
     upload () {
       var that = this;
-      const fileToLoad = event.target.files[0]
+      const fileToLoad = this.file
       const reader = new FileReader()
       reader.onload = fileLoadedEvent => {
         Papa.parse(fileLoadedEvent.target.result, {
