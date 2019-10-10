@@ -452,10 +452,10 @@ export default {
           that.selectedFlex = 'WR'
         }
 
-        if (index == (4 || 5)) {
+        if (index == 4) {
           that.selectedFlex = 'TE'
         }
-        if (index == (6 || 7 || 8 || 9 || 10)) {
+        if (index == (5 || 6 || 7 || 8 || 9 || 10)) {
           that.selectedFlex = 'RB'
         }
         index = Math.floor(Math.random() * Math.floor(that.positions[that.selectedFlex].length));
@@ -505,7 +505,7 @@ export default {
             that.generate();
           }, 0);
 
-        } else if (totalSalary < 48900) {
+        } else if (totalSalary < 49600) {
           return setTimeout(() => {
             that.generate();
           }, 0);
@@ -514,7 +514,7 @@ export default {
             that.generate();
           }, 0);
         }
-        else if (that.stackCount < 3) {
+        else if (that.stackCount < 4) {
           return setTimeout(() => {
             that.generate();
           }, 0);
