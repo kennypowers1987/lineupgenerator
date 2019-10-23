@@ -219,8 +219,7 @@ export default {
         'FLEX': null,
         'D': null,
         'Total Salary': null
-      },
-      stackCount: 0,
+      }
     }
   },
   created () {
@@ -375,13 +374,10 @@ export default {
       this.showSpinner.on = true;
       let that = this;
       let playerIds = [];
-      that.stackCount = 0;
       function getQB () {
         let index = Math.floor(Math.random() * Math.floor(that.positions['QB'].length - 1));
-        //that.lineup.QB = (({ Nickname, Salary, Position }) => ({ Nickname, Salary, Position }))(that.positions['QB'][index])
         that.lineup.QB = that.positions['QB'][index];
         playerIds.push(that.lineup.QB.Id);
-
         getRB1();
       }
 
@@ -389,9 +385,6 @@ export default {
         let index = Math.floor(Math.random() * Math.floor(that.positions['RB'].length));
         that.lineup.RB1 = that.positions['RB'][index];
         playerIds.push(that.lineup.RB1.Id);
-        if (that.lineup.RB1['Game'] === that.lineup.QB['Game']) {
-          that.stackCount = that.stackCount + 1
-        }
         getRB2();
       }
 
@@ -399,9 +392,6 @@ export default {
         let index = Math.floor(Math.random() * Math.floor(that.positions['RB'].length));
         that.lineup.RB2 = that.positions['RB'][index];
         playerIds.push(that.lineup.RB2.Id);
-        if (that.lineup.RB2['Game'] === that.lineup.QB['Game']) {
-          that.stackCount = that.stackCount + 1
-        }
         getWR1();
       }
 
@@ -409,9 +399,6 @@ export default {
         let index = Math.floor(Math.random() * Math.floor(that.positions['WR'].length));
         that.lineup.WR1 = that.positions['WR'][index];
         playerIds.push(that.lineup.WR1.Id);
-        if (that.lineup.WR1['Game'] === that.lineup.QB['Game']) {
-          that.stackCount = that.stackCount + 1
-        }
         getWR2();
       }
 
@@ -419,9 +406,6 @@ export default {
         let index = Math.floor(Math.random() * Math.floor(that.positions['WR'].length));
         that.lineup.WR2 = that.positions['WR'][index];
         playerIds.push(that.lineup.WR2.Id);
-        if (that.lineup.WR2['Game'] === that.lineup.QB['Game']) {
-          that.stackCount = that.stackCount + 1
-        }
         getWR3();
       }
 
@@ -429,9 +413,6 @@ export default {
         let index = Math.floor(Math.random() * Math.floor(that.positions['WR'].length));
         that.lineup.WR3 = that.positions['WR'][index];
         playerIds.push(that.lineup.WR3.Id);
-        if (that.lineup.WR3['Game'] === that.lineup.QB['Game']) {
-          that.stackCount = that.stackCount + 1
-        }
         getTE();
       }
 
@@ -439,9 +420,6 @@ export default {
         let index = Math.floor(Math.random() * Math.floor(that.positions['TE'].length));
         that.lineup.TE = that.positions['TE'][index];
         playerIds.push(that.lineup.TE.Id);
-        if (that.lineup.TE['Game'] === that.lineup.QB['Game']) {
-          that.stackCount = that.stackCount + 1
-        }
         getFLEX();
       }
 
@@ -461,9 +439,6 @@ export default {
         index = Math.floor(Math.random() * Math.floor(that.positions[that.selectedFlex].length));
         that.lineup.FLEX = that.positions[that.selectedFlex][index];
         playerIds.push(that.lineup.FLEX.Id);
-        if (that.lineup.FLEX['Game'] === that.lineup.QB['Game']) {
-          that.stackCount = that.stackCount + 1
-        }
         getD();
       }
 
@@ -499,7 +474,35 @@ export default {
           parseInt(that.lineup.TE.Salary) +
           parseInt(that.lineup.FLEX.Salary) +
           parseInt(that.lineup.D.Salary);
-          console.log(totalSalary)
+        let games = Object.keys(that.lineup).map((key) => {
+          if (key !== "Total Salary") {
+            return that.lineup[key]['Game']
+          }
+        });
+
+        let gameStacks = new Map([...new Set(games)].map(
+          x => [x, games.filter(y => y === x).length]
+        ));
+
+        gameStacks = Object.fromEntries(gameStacks);
+        delete gameStacks[undefined]
+        
+        
+       
+        that.lineup.gameStacks = Object.keys(gameStacks).map((i)=>{
+            if (gameStacks[i] && gameStacks[i] > 1) {
+              return i + ' : ' + gameStacks[i]
+            }
+        }).filter((e)=>{
+          if(e) return e;
+        });
+         console.log(that.lineup.gameStacks)
+        if (that.lineup.gameStacks.length < 2) {
+          return setTimeout(() => {
+            that.generate();
+          }, 0); 
+        }  
+
         if (checkDupes.length < 9) {
           return setTimeout(() => {
             that.generate();
@@ -514,14 +517,7 @@ export default {
           return setTimeout(() => {
             that.generate();
           }, 0);
-        }
-        else if (that.stackCount < 3) {
-         
-          return setTimeout(() => {
-            that.generate();
-          }, 0);
-        }
-
+        }       
         else {
           that.lineup['Total Salary'] = totalSalary;
           let lineup = {
@@ -535,6 +531,10 @@ export default {
             'FLEX': that.lineup.FLEX.Nickname + " " + that.lineup.FLEX['Team'] + " " + that.lineup.FLEX[
               'Salary'],
             'D': that.lineup.D.Nickname + " " + that.lineup.D['Team'] + " " + that.lineup.D['Salary'],
+            'Game Stack 1': that.lineup.gameStacks[0] + ' players',
+            'Game Stack 2': that.lineup.gameStacks[1] + ' players',
+            'Game Stack 3': that.lineup.gameStacks[2] ? that.lineup.gameStacks[2]+ ' players': "",
+            'Game Stack 4': that.lineup.gameStacks[3] ? that.lineup.gameStacks[3]+ ' players': "",
             'Total Salary': totalSalary
           }
 
