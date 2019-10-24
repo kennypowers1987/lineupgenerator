@@ -425,15 +425,12 @@ export default {
 
       function getFLEX () {
         let index = Math.floor(Math.random() * 10) + 1
-        if (index == (1 || 2 || 3)
+        if (index == (1 || 2 || 3 || 4)
         ) {
           that.selectedFlex = 'WR'
         }
 
-        if (index == (4 || 5)) {
-          that.selectedFlex = 'TE'
-        }
-        if (index == (6 || 7 || 8 || 9 || 10)) {
+        if (index == (5|| 6 || 7 || 8 || 9 || 10)) {
           that.selectedFlex = 'RB'
         }
         index = Math.floor(Math.random() * Math.floor(that.positions[that.selectedFlex].length));
@@ -496,7 +493,6 @@ export default {
         }).filter((e)=>{
           if(e) return e;
         });
-         console.log(that.lineup.gameStacks)
         if (that.lineup.gameStacks.length < 2) {
           return setTimeout(() => {
             that.generate();
@@ -543,7 +539,6 @@ export default {
             that.progress.totalLineups++;
             if (that.progress.totalLineups >= that.progress.numberToGenerate) {
               that.progress.totalLineups = 0;
-              console.log(that.lineups);
               return that.showSpinner.on = false;
             } else {
               setTimeout(() => {

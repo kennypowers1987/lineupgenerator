@@ -425,14 +425,11 @@ export default {
 
       function getFLEX () {
         let index = Math.floor(Math.random() * 10) + 1
-        if (index == (1 || 2 || 3)
+        if (index == (1 || 2 || 3 || 4)
         ) {
           that.selectedFlex = 'WR'
         }
 
-        if (index == 4) {
-          that.selectedFlex = 'TE'
-        }
         if (index == (5 || 6 || 7 || 8 || 9 || 10)) {
           that.selectedFlex = 'RB'
         }
