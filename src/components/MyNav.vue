@@ -36,6 +36,11 @@
           FanDuel NFL Lineup Generator
         </b-nav-item>
       </b-navbar-nav>
+      <b-navbar-nav>
+        <b-nav-item to="/ExposureMachine">
+          Set PlayerPools
+        </b-nav-item>
+      </b-navbar-nav>
       <!-- <b-navbar-nav class="ml-auto">
         <b-nav-item-dropdown
           text="Theme"
