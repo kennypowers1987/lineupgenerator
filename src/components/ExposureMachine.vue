@@ -84,6 +84,13 @@
               >
                 Add to Pool
               </b-button>
+              <b-button
+                size="sm"
+                class="badge badge-secondary"
+                @click.stop="addToPlayerPoolAsFlex(playersList[row.index])"
+              >
+                Add to Pool as Flex
+              </b-button>
             </template>
           </b-table>
         </b-tab>
@@ -117,6 +124,13 @@
               >
                 Add to Pool
               </b-button>
+              <b-button
+                size="sm"
+                class="badge badge-secondary"
+                @click.stop="addToPlayerPoolAsFlex(playersList[row.index])"
+              >
+                Add to Pool as Flex
+              </b-button>
             </template>
           </b-table>
         </b-tab>
@@ -138,7 +152,7 @@
             <b-table
               striped
               hover
-              :items="getUnique(playerPool.players, 'ID')"
+              :items="playerPool.players"
               :fields="playersListFields"
               style="font-size: small;"
             >
@@ -160,6 +174,13 @@
                   @click.stop="addPlayer(playerPool.players[row.index])"
                 >
                   Increase Exposure
+                </b-button>
+                <b-button
+                  size="sm"
+                  class="badge badge-secondary"
+                  @click.stop="addToPlayerPoolAsFlex(playerPool.players[row.index])"
+                >
+                  Add to Pool as Flex
                 </b-button>
               </template>
             </b-table>
@@ -215,6 +236,13 @@ export default {
     addToPlayerPool (player) {
       this.playerPool.players.push(player);
       this.removePlayer(player);
+    },
+    addToPlayerPoolAsFlex (player) {
+      player.Position = 'FLEX';
+      let temp = JSON.parse(JSON.stringify(this.playerPool.players));
+      temp.push(player)
+      this.playerPool.players = JSON.parse(JSON.stringify(temp));
+      //this.removePlayer(player);
     },
     removePlayer (player) {
       let id = player.ID
@@ -340,9 +368,9 @@ export default {
 .generate-progress-bar {
   margin-top: 10px !important;
 }
-.alert-light{
-  min-height:8vh;
+.alert-light {
+  min-height: 8vh;
   max-height: 8vh;
-  overflow-y:scroll;
+  overflow-y: scroll;
 }
 </style>

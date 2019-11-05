@@ -389,9 +389,13 @@ export default {
       }
 
       function getRB2 () {
-        let index = Math.floor(Math.random() * Math.floor(that.positions['RB'].length));
-        that.lineup.RB2 = that.positions['RB'][index];
-        playerIds.push(that.lineup.RB2.ID);
+        //let index = Math.floor(Math.random() * Math.floor(that.positions['RB'].length));
+        let RB2 = that.positions['RB'].find((o) => {
+          return o.ID === '13651456'
+          });
+        console.log(RB2)
+        that.lineup.RB2 = RB2;
+        playerIds.push(that.lineup.RB2.ID);        
         getWR1();
       }
 
@@ -424,17 +428,20 @@ export default {
       }
 
       function getFLEX () {
-        let index = Math.floor(Math.random() * 10) + 1
-        if (index == (1 || 2 || 3 || 4)
-        ) {
-          that.selectedFlex = 'WR'
-        }
+        // let index = Math.floor(Math.random() * 10) + 1
+        // if (index == (1 || 2 || 3 || 4)
+        // ) {
+        //   that.selectedFlex = 'WR'
+        // }
 
-        if (index == (5 || 6 || 7 || 8 || 9 || 10)) {
-          that.selectedFlex = 'RB'
-        }
-        index = Math.floor(Math.random() * Math.floor(that.positions[that.selectedFlex].length));
-        that.lineup.FLEX = that.positions[that.selectedFlex][index];
+        // if (index == (5 || 6 || 7 || 8 || 9 || 10)) {
+        //   that.selectedFlex = 'RB'
+        // }
+        // index = Math.floor(Math.random() * Math.floor(that.positions[that.selectedFlex].length));
+        // that.lineup.FLEX = that.positions[that.selectedFlex][index];
+        // playerIds.push(that.lineup.FLEX.ID);
+        let index = Math.floor(Math.random() * Math.floor(that.positions['FLEX'].length));
+        that.lineup.FLEX = that.positions['FLEX'][index];
         playerIds.push(that.lineup.FLEX.ID);
         getDST();
       }
@@ -472,7 +479,7 @@ export default {
           parseInt(that.lineup.FLEX.Salary) +
           parseInt(that.lineup.DST.Salary);
 
-        
+
         let games = Object.keys(that.lineup).map((key) => {
           if (key !== "Total Salary") {
             return that.lineup[key]['Game Info']
@@ -485,29 +492,33 @@ export default {
 
         gameStacks = Object.fromEntries(gameStacks);
         delete gameStacks[undefined]
-        
-        
-       
-        that.lineup.gameStacks = Object.keys(gameStacks).map((i)=>{
-            if (gameStacks[i] && gameStacks[i] > 1) {
+
+
+
+        that.lineup.gameStacks = Object.keys(gameStacks).map((i) => {
+          if (gameStacks[i] && gameStacks[i] > 3) {
+            if (that.lineup.QB['Game Info'] === i) {
               return i + ' : ' + gameStacks[i]
             }
-        }).filter((e)=>{
-          if(e) return e;
+          }
+        }).filter((e) => {
+          if (e) return e;
         });
-        
-        if (that.lineup.gameStacks.length < 2) {
+
+
+
+        if (that.lineup.gameStacks.length < 1) {
           return setTimeout(() => {
             that.generate();
-          }, 0); 
-        }        
-        
+          }, 0);
+        }
+
         if (checkDupes.length < 9) {
           return setTimeout(() => {
             that.generate();
           }, 0);
 
-        } else if (totalSalary < 49000) {
+        } else if (totalSalary < 49600) {
           return setTimeout(() => {
             that.generate();
           }, 0);
@@ -530,10 +541,7 @@ export default {
             'FLEX': that.lineup.FLEX.Name + " " + that.lineup.FLEX['TeamAbbrev'] + " " + that.lineup.FLEX[
               'Salary'],
             'DST': that.lineup.DST.Name + " " + that.lineup.DST['TeamAbbrev'] + " " + that.lineup.DST['Salary'],
-            'Game Stack 1': that.lineup.gameStacks[0] + ' players',
-            'Game Stack 2': that.lineup.gameStacks[1] + ' players',
-            'Game Stack 3': that.lineup.gameStacks[2] ? that.lineup.gameStacks[2]+ ' players': "",
-            'Game Stack 4': that.lineup.gameStacks[3] ? that.lineup.gameStacks[3]+ ' players': "",
+            'Game Stack': that.lineup.gameStacks[0] + ' players',
             'Total Salary': totalSalary
           }
 
@@ -542,7 +550,6 @@ export default {
             that.progress.totalLineups++;
             if (that.progress.totalLineups >= that.progress.numberToGenerate) {
               that.progress.totalLineups = 0;
-              console.log(that.lineups);
               return that.showSpinner.on = false;
             } else {
               setTimeout(() => {
