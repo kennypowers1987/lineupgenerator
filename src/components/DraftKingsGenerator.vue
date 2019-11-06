@@ -199,14 +199,7 @@ export default {
       progress: {
         numberToGenerate: 10,
         totalLineups: 0
-      },
-      exposure: {
-        QB: [],
-        RB: [],
-        WR: [],
-        TE: [],
-        DST: [],
-      },
+      },      
       lineup: {
         'QB': null,
         'RB1': null,
@@ -389,13 +382,9 @@ export default {
       }
 
       function getRB2 () {
-        //let index = Math.floor(Math.random() * Math.floor(that.positions['RB'].length));
-        let RB2 = that.positions['RB'].find((o) => {
-          return o.ID === '13651456'
-          });
-        console.log(RB2)
-        that.lineup.RB2 = RB2;
-        playerIds.push(that.lineup.RB2.ID);        
+       let index = Math.floor(Math.random() * Math.floor(that.positions['RB'].length));
+        that.lineup.RB2 = that.positions['RB'][index];
+        playerIds.push(that.lineup.RB2.ID);
         getWR1();
       }
 
@@ -440,8 +429,9 @@ export default {
         // index = Math.floor(Math.random() * Math.floor(that.positions[that.selectedFlex].length));
         // that.lineup.FLEX = that.positions[that.selectedFlex][index];
         // playerIds.push(that.lineup.FLEX.ID);
-        let index = Math.floor(Math.random() * Math.floor(that.positions['FLEX'].length));
-        that.lineup.FLEX = that.positions['FLEX'][index];
+        let curPositions = that.groupBy(that.playersList, "Roster Position");
+        let index = Math.floor(Math.random() * Math.floor(curPositions['FLEX'].length));
+        that.lineup.FLEX = curPositions['FLEX'][index];
         playerIds.push(that.lineup.FLEX.ID);
         getDST();
       }
@@ -495,8 +485,12 @@ export default {
 
 
 
-        that.lineup.gameStacks = Object.keys(gameStacks).map((i) => {
+        that.lineup.gameStacks = Object.keys(gameStacks).map((i) => {          
           if (gameStacks[i] && gameStacks[i] > 3) {
+            if (that.lineup.QB['Game Info'] === i && that.lineup.QB['Game Info'] !== that.lineup.DST['Game Info']) {
+              return i + ' : ' + gameStacks[i]
+            }
+          } else if (gameStacks[i] && gameStacks[i] > 2 && that.lineup.QB['Roster Position'] === "Naked" && that.lineup.QB['Game Info'] !== that.lineup.DST['Game Info']) {
             if (that.lineup.QB['Game Info'] === i) {
               return i + ' : ' + gameStacks[i]
             }

@@ -1,28 +1,30 @@
 <template>
-  <div class="parse col-md-12">
-    <h2>Exposure</h2>
-    <span>
-      <b-button
-        :variant="theme"
-        download
-        class="badge badge-info"
-        @click="savePlayersList"
-      >
-        Download This Player List
-      </b-button>
-    </span>
-    <div>
-      <!-- Styled -->
-      <b-form-file
-        v-model="file"
-        :state="Boolean(file)"
-        placeholder="Choose a file..."
-        drop-placeholder="Drop file here..."
-        accept=".csv"
-        @input="upload"
-      />
-      <div class="mt-3">
-        Selected file: {{ file ? file.name : '' }}
+  <div class="parse container col-md-12">
+    <div class="col-md-10">
+      <h2>Exposure</h2>
+      <span>
+        <b-button
+          :variant="theme"
+          download
+          class="badge badge-info"
+          @click="savePlayersList"
+        >
+          Download This Player List
+        </b-button>
+      </span>
+      <div>
+        <!-- Styled -->
+        <b-form-file
+          v-model="file"
+          :state="Boolean(file)"
+          placeholder="Choose a file..."
+          drop-placeholder="Drop file here..."
+          accept=".csv"
+          @input="upload"
+        />
+        <div class="mt-3">
+          Selected file: {{ file ? file.name : '' }}
+        </div>
       </div>
     </div>
     <div class="body col-md-10">
@@ -31,6 +33,14 @@
           title="All Players"
           active
         >
+          <div class="alert alert-light">
+            <b-btn
+              variant="link"
+              size="sm"
+            >
+              All Players
+            </b-btn>
+          </div>
           <b-table
             v-if="playersList"
             striped
@@ -50,6 +60,20 @@
                 @click.stop="addToPlayerPool(playersList[row.index])"
               >
                 Add to Pool
+              </b-button>
+              <b-button
+                size="sm"
+                class="badge badge-secondary"
+                @click.stop="addToPlayerPoolAsFlex(playersList[row.index])"
+              >
+                Add to Pool as Flex
+              </b-button>
+              <b-button
+                size="sm"
+                class="badge badge-secondary"
+                @click.stop="addToPlayerPoolAsNaked(playersList[row.index])"
+              >
+                Add to Pool as Naked
               </b-button>
             </template>
           </b-table>
@@ -95,7 +119,7 @@
           </b-table>
         </b-tab>
         <b-tab title="Players By Position">
-          <div class="alert alert-light">
+          <div class="alert alert-light col-md-12">
             <b-btn
               v-for="position in Object.keys(positions)"
               :key="position.Position"
@@ -135,9 +159,12 @@
           </b-table>
         </b-tab>
       </b-tabs>
-      <span class="col-md-5 float-right">
+      <span class="col-md-4 float-right">
         <b-tabs v-if="playersList">
-          <b-tab title="All Players">
+          <b-tab
+            title="All Players"
+            class="col-md-5"
+          >
             <div
               v-if="playersList"
               class="alert alert-light"
@@ -146,7 +173,7 @@
                 variant="link"
                 size="sm"
               >
-                Does nothing
+                All Players
               </b-btn>
             </div>
             <b-table
@@ -238,11 +265,12 @@ export default {
       this.removePlayer(player);
     },
     addToPlayerPoolAsFlex (player) {
-      player.Position = 'FLEX';
-      let temp = JSON.parse(JSON.stringify(this.playerPool.players));
-      temp.push(player)
-      this.playerPool.players = JSON.parse(JSON.stringify(temp));
-      //this.removePlayer(player);
+      player['Roster Position'] = 'FLEX';
+      this.addToPlayerPool(player)
+    },
+    addToPlayerPoolAsNaked (player) {
+      player['Roster Position'] = 'Naked';
+      this.addToPlayerPool(player)
     },
     removePlayer (player) {
       let id = player.ID
@@ -343,8 +371,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .body {
-  display: flex;
-  justify-content: center;
+  display: flex;  
 }
 .entry {
   width: 40%;
