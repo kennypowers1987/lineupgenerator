@@ -199,7 +199,7 @@ export default {
       progress: {
         numberToGenerate: 10,
         totalLineups: 0
-      },      
+      },
       lineup: {
         'QB': null,
         'RB1': null,
@@ -382,7 +382,7 @@ export default {
       }
 
       function getRB2 () {
-       let index = Math.floor(Math.random() * Math.floor(that.positions['RB'].length));
+        let index = Math.floor(Math.random() * Math.floor(that.positions['RB'].length));
         that.lineup.RB2 = that.positions['RB'][index];
         playerIds.push(that.lineup.RB2.ID);
         getWR1();
@@ -485,12 +485,15 @@ export default {
 
 
 
-        that.lineup.gameStacks = Object.keys(gameStacks).map((i) => {          
+        that.lineup.gameStacks = Object.keys(gameStacks).map((i) => {
           if (gameStacks[i] && gameStacks[i] > 3) {
             if (that.lineup.QB['Game Info'] === i && that.lineup.QB['Game Info'] !== that.lineup.DST['Game Info']) {
               return i + ' : ' + gameStacks[i]
             }
-          } else if (gameStacks[i] && gameStacks[i] > 2 && that.lineup.QB['Roster Position'] === "Naked" && that.lineup.QB['Game Info'] !== that.lineup.DST['Game Info']) {
+          } else if (gameStacks[i] && gameStacks[i] > 0
+            && that.lineup.QB['Roster Position'] === "Naked"
+            && that.lineup.QB['Game Info'] !== that.lineup.DST['Game Info']
+          ) {
             if (that.lineup.QB['Game Info'] === i) {
               return i + ' : ' + gameStacks[i]
             }
@@ -498,9 +501,13 @@ export default {
         }).filter((e) => {
           if (e) return e;
         });
-
-
-
+        
+        let percentNaked = (that.lineups.filter((obj) => obj['isNaked']).length)/that.lineups.length;
+        if (percentNaked > .25 && that.lineup.QB['Roster Position'] === "Naked") {
+          return setTimeout(() => {
+            that.generate();
+          }, 0);
+        }
         if (that.lineup.gameStacks.length < 1) {
           return setTimeout(() => {
             that.generate();
@@ -536,7 +543,8 @@ export default {
               'Salary'],
             'DST': that.lineup.DST.Name + " " + that.lineup.DST['TeamAbbrev'] + " " + that.lineup.DST['Salary'],
             'Game Stack': that.lineup.gameStacks[0] + ' players',
-            'Total Salary': totalSalary
+            'Total Salary': totalSalary,
+            'isNaked' : that.lineup.QB['Roster Position'] === 'Naked' ? true : false
           }
 
           that.lineups.unshift(lineup);
