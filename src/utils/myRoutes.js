@@ -3,6 +3,7 @@ import fanduel  from "../components/FanDuelGenerator.vue";
 import captainmode  from "../components/CaptainModeGenerator.vue";
 import tiers from "../components/TiersGeneratorDK.vue";
 import exposure from "../components/ExposureMachine.vue";
+import dknba from "../components/DraftKingsGeneratorNba.vue";
 
 const DraftKings = {
 	//template: '#modals',
@@ -31,6 +32,12 @@ const ExposureMachine = {
 	routes,
 	render: h => h(exposure)
 };
+
+const DraftKingsNba = {
+	//template: '#modals',
+	routes,
+	render: h => h(dknba)
+};
 const routes = [	
     {
 		path: "/DraftKings",
@@ -51,6 +58,10 @@ const routes = [
 	{
 		path: "/ExposureMachine",
 		component: ExposureMachine
+	},
+	{
+		path: "/DraftKingsNba",
+		component: DraftKingsNba
 	},
 	{
 		path: "*",
