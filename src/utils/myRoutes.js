@@ -6,12 +6,18 @@ import exposure from "../components/ExposureMachine.vue";
 import dknba from "../components/DraftKingsGeneratorNba.vue";
 import fantasydraftnfl from "../components/FantasyDraftGenerator.vue";
 import fantasydraftnba from "../components/FantasyDraftNBA.vue";
+import yahoo from "../components/YahooGenerator.vue";
 
 
 const DraftKings = {
 	//template: '#modals',
 	routes,
 	render: h => h(draftkings)
+};
+const Yahoo = {
+	//template: '#modals',
+	routes,
+	render: h => h(yahoo)
 };
 
 const FanDuel = {
@@ -84,6 +90,10 @@ const routes = [
 	{
 		path: "/FantasyDraftNba",
 		component: FantasyDraftNba
+	},
+	{
+		path: "/Yahoo",
+		component: Yahoo
 	},
 	{
 		path: "*",

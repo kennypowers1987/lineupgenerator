@@ -56,6 +56,11 @@
           FantasyDraft NBA
         </b-nav-item>
       </b-navbar-nav>
+      <b-navbar-nav>
+        <b-nav-item to="/Yahoo">
+          Yahoo
+        </b-nav-item>
+      </b-navbar-nav>
 
       <!-- <b-navbar-nav class="ml-auto">
         <b-nav-item-dropdown
