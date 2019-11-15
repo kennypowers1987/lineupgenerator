@@ -5,6 +5,7 @@ import tiers from "../components/TiersGeneratorDK.vue";
 import exposure from "../components/ExposureMachine.vue";
 import dknba from "../components/DraftKingsGeneratorNba.vue";
 import fantasydraftnfl from "../components/FantasyDraftGenerator.vue";
+import fantasydraftnba from "../components/FantasyDraftNBA.vue";
 
 
 const DraftKings = {
@@ -46,6 +47,11 @@ const FantasyDraftNfl = {
 	routes,
 	render: h => h(fantasydraftnfl)
 };
+const FantasyDraftNba = {
+	//template: '#modals',
+	routes,
+	render: h => h(fantasydraftnba)
+};
 const routes = [	
     {
 		path: "/DraftKings",
@@ -74,6 +80,10 @@ const routes = [
 	{
 		path: "/FantasyDraftNfl",
 		component: FantasyDraftNfl
+	},
+	{
+		path: "/FantasyDraftNba",
+		component: FantasyDraftNba
 	},
 	{
 		path: "*",
