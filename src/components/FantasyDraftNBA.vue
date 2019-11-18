@@ -453,7 +453,7 @@ export default {
             that.generate();
           }, 0);
 
-        } else if (totalSalary < 74000) {
+        } else if (totalSalary < 97000) {
           console.log('totalSalMin')
           return setTimeout(() => {
             that.generate();

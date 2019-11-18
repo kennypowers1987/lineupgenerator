@@ -506,7 +506,7 @@ export default {
             that.generate();
           }, 0);
 
-        } else if (totalSalary < 195) {
+        } else if (totalSalary < 185) {
           console.log('totalSalary min')
           return setTimeout(() => {
             that.generate();

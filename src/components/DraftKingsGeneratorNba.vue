@@ -492,7 +492,7 @@ export default {
             that.generate();
           }, 0);
 
-        } else if (totalSalary < 49500) {
+        } else if (totalSalary < 45500) {
           console.log('Failing MinSal')
           return setTimeout(() => {
             that.generate();

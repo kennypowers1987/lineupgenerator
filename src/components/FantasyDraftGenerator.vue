@@ -204,8 +204,7 @@ export default {
         'RB1': null,
         'RB2': null,
         'WR1': null,
-        'WR2': null,
-        'WR3': null,
+        'WR2': null,       
         'TE': null,
         'FLEX': null,
         'FLEX2': null,
@@ -398,16 +397,9 @@ export default {
         let index = Math.floor(Math.random() * Math.floor(that.positions['WR'].length));
         that.lineup.WR2 = that.positions['WR'][index];
         playerIds.push(that.lineup.WR2.ID);
-        getWR3();
-      }
-
-      function getWR3 () {
-        let index = Math.floor(Math.random() * Math.floor(that.positions['WR'].length));
-        that.lineup.WR3 = that.positions['WR'][index];
-        playerIds.push(that.lineup.WR3.ID);
         getTE();
       }
-
+     
       function getTE () {
         let index = Math.floor(Math.random() * Math.floor(that.positions['TE'].length));
         that.lineup.TE = that.positions['TE'][index];
@@ -453,6 +445,7 @@ export default {
           return result;
         }
         let checkDupes = removeDuplicate(playerIds);
+        console.log(playerIds)
         const parseSal = (currency) => {
           return Number(currency.replace(/[^0-9.-]+/g,""));
         }
@@ -462,8 +455,7 @@ export default {
           parseSal(that.lineup.RB1.Salary) +
           parseSal(that.lineup.RB2.Salary) +
           parseSal(that.lineup.WR1.Salary) +
-          parseSal(that.lineup.WR2.Salary) +
-          parseSal(that.lineup.WR3.Salary) +
+          parseSal(that.lineup.WR2.Salary) +         
           parseSal(that.lineup.TE.Salary) +
           parseSal(that.lineup.FLEX.Salary) +
           parseSal(that.lineup.FLEX2.Salary) +
@@ -472,7 +464,7 @@ export default {
         console.log(totalSalary)
         let games = Object.keys(that.lineup).map((key) => {
           if (key !== "Total Salary") {
-            return that.lineup[key]['Game Info']
+            return that.lineup[key]['Game']
           }
         });
 
@@ -487,14 +479,14 @@ export default {
 
         that.lineup.gameStacks = Object.keys(gameStacks).map((i) => {
           if (gameStacks[i] && gameStacks[i] > 3) {
-            if (that.lineup.QB['Game Info'] === i && that.lineup.QB['Game Info'] !== that.lineup.DST['Game Info']) {
+            if (that.lineup.QB['Game'] === i && that.lineup.QB['Game'] !== that.lineup.DST['Game']) {
               return i + ' : ' + gameStacks[i]
             }
           } else if (gameStacks[i] && gameStacks[i] > 0
             && that.lineup.QB['Roster Position'] === "Naked"
-            && that.lineup.QB['Game Info'] !== that.lineup.DST['Game Info']
+            && that.lineup.QB['Game'] !== that.lineup.DST['Game']
           ) {
-            if (that.lineup.QB['Game Info'] === i) {
+            if (that.lineup.QB['Game'] === i) {
               return i + ' : ' + gameStacks[i]
             }
           }
@@ -509,6 +501,7 @@ export default {
           }, 0);
         }
         if (that.lineup.gameStacks.length < 1) {
+          console.log(JSON.stringify(that.lineup.gameStacks))
           console.log('gamestacks')
           return setTimeout(() => {
             that.generate();
@@ -521,7 +514,7 @@ export default {
             that.generate();
           }, 0);
 
-        } else if (totalSalary < 99000) {
+        } else if (totalSalary < 95000) {
           console.log('totalSalMin')
           return setTimeout(() => {
             that.generate();
@@ -540,8 +533,7 @@ export default {
             'RB1': that.lineup.RB1.Name + " " + that.lineup.RB1['Team'] + " " + that.lineup.RB1['Salary'],
             'RB2': that.lineup.RB2.Name + " " + that.lineup.RB2['Team'] + " " + that.lineup.RB2['Salary'],
             'WR1': that.lineup.WR1.Name + " " + that.lineup.WR1['Team'] + " " + that.lineup.WR1['Salary'],
-            'WR2': that.lineup.WR2.Name + " " + that.lineup.WR2['Team'] + " " + that.lineup.WR2['Salary'],
-            'WR3': that.lineup.WR3.Name + " " + that.lineup.WR3['Team'] + " " + that.lineup.WR3['Salary'],
+            'WR2': that.lineup.WR2.Name + " " + that.lineup.WR2['Team'] + " " + that.lineup.WR2['Salary'],            
             'TE': that.lineup.TE.Name + " " + that.lineup.TE['Team'] + " " + that.lineup.TE['Salary'],
             'FLEX': that.lineup.FLEX.Name + " " + that.lineup.FLEX['Team'] + " " + that.lineup.FLEX[
               'Salary'],
@@ -573,11 +565,10 @@ export default {
             'RB1': that.lineup.RB1.ID,
             'RB2': that.lineup.RB2.ID,
             'WR1': that.lineup.WR1.ID,
-            'WR2': that.lineup.WR2.ID,
-            'WR3': that.lineup.WR3.ID,
+            'WR2': that.lineup.WR2.ID,            
             'TE': that.lineup.TE.ID,
             'FLEX': that.lineup.FLEX.ID,
-            'FLEX2': that.lineup.FLEX.ID,
+            'FLEX2': that.lineup.FLEX2.ID,
             'DST': that.lineup.DST.ID,
           };
           that.fullLineups.unshift(lineup);

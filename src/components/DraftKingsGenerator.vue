@@ -505,7 +505,7 @@ export default {
             that.generate();
           }, 0);
 
-        } else if (totalSalary < 48900) {
+        } else if (totalSalary < 49000) {
           return setTimeout(() => {
             that.generate();
           }, 0);
