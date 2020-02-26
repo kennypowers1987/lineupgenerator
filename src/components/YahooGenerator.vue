@@ -2,7 +2,7 @@
   <div class="parse">
     <common-header
       site="Yahoo"
-      contest="NFL Classic"
+      contest="UCL"
     />
     <div>
       <!-- Styled -->
@@ -200,15 +200,17 @@ export default {
         totalLineups: 0
       },
       lineup: {
-        'QB': null,
-        'RB1': null,
-        'RB2': null,
-        'WR1': null,
-        'WR2': null,
-        'WR3': null,
-        'TE': null,
-        'FLEX': null,
-        'DEF': null,
+        'F': null,
+        'F2': null,
+        'M': null,
+        'M2': null,
+        'M3': null,
+        'M4': null,
+        'D': null,
+        'D2': null,
+        'D3': null,
+        'UTIL': null,
+        'GK': null,
         'Total Salary': null
       }
     }
@@ -317,7 +319,7 @@ export default {
       const blob = new Blob([this.parseJSONtoCSV(this.fullLineups)], {
         type: 'text/csv'
       })
-      FileSaver.saveAs(blob, 'DK' + new Date() + '.csv');
+      FileSaver.saveAs(blob, 'yahoo .csv');
     },
     savePlayersList () {
       const blob = new Blob([this.parseJSONtoCSV(this.playersList)], {
@@ -364,68 +366,83 @@ export default {
       this.showSpinner.on = true;
       let that = this;
       let playerIds = [];
-      function getQB () {
-        let index = Math.floor(Math.random() * Math.floor(that.positions['QB'].length - 1));
-        that.lineup.QB = that.positions['QB'][index];
-        playerIds.push(that.lineup.QB.ID);
 
-        getRB1();
+      function getF () {
+        let index = Math.floor(Math.random() * Math.floor(that.positions['F'].length - 1));
+        that.lineup.F = that.positions['F'][index];
+        playerIds.push(that.lineup.F.ID);
+        getF2();
+
       }
 
-      function getRB1 () {
-        let index = Math.floor(Math.random() * Math.floor(that.positions['RB'].length));
-        that.lineup.RB1 = that.positions['RB'][index];
-        playerIds.push(that.lineup.RB1.ID);
-        getRB2();
+      function getF2 () {
+        let index = Math.floor(Math.random() * Math.floor(that.positions['F'].length));
+        that.lineup.F2 = that.positions['F'][index];
+        playerIds.push(that.lineup.F2.ID);
+        getM();
       }
 
-      function getRB2 () {
-        let index = Math.floor(Math.random() * Math.floor(that.positions['RB'].length));
-        that.lineup.RB2 = that.positions['RB'][index];
-        playerIds.push(that.lineup.RB2.ID);
-        getWR1();
+      function getM () {
+        let index = Math.floor(Math.random() * Math.floor(that.positions['M'].length));
+        that.lineup.M = that.positions['M'][index];
+        playerIds.push(that.lineup.M.ID);
+        getM2();
       }
 
-      function getWR1 () {
-        let index = Math.floor(Math.random() * Math.floor(that.positions['WR'].length));
-        that.lineup.WR1 = that.positions['WR'][index];
-        playerIds.push(that.lineup.WR1.ID);
-        getWR2();
+      function getM2 () {
+        let index = Math.floor(Math.random() * Math.floor(that.positions['M'].length));
+        that.lineup.M2 = that.positions['M'][index];
+        playerIds.push(that.lineup.M2.ID);
+        getM3();
       }
 
-      function getWR2 () {
-        let index = Math.floor(Math.random() * Math.floor(that.positions['WR'].length));
-        that.lineup.WR2 = that.positions['WR'][index];
-        playerIds.push(that.lineup.WR2.ID);
-        getWR3();
+      function getM3 () {
+        let index = Math.floor(Math.random() * Math.floor(that.positions['M'].length));
+        that.lineup.M3 = that.positions['M'][index];
+        playerIds.push(that.lineup.M3.ID);
+        getM4();
       }
 
-      function getWR3 () {
-        let index = Math.floor(Math.random() * Math.floor(that.positions['WR'].length));
-        that.lineup.WR3 = that.positions['WR'][index];
-        playerIds.push(that.lineup.WR3.ID);
-        getTE();
+      function getM4 () {
+        let index = Math.floor(Math.random() * Math.floor(that.positions['M'].length));
+        that.lineup.M4 = that.positions['M'][index];
+        playerIds.push(that.lineup.M4.ID);
+        getD();
       }
 
-      function getTE () {
-        let index = Math.floor(Math.random() * Math.floor(that.positions['TE'].length));
-        that.lineup.TE = that.positions['TE'][index];
-        playerIds.push(that.lineup.TE.ID);
-        getFLEX();
+      function getD () {
+        let index = Math.floor(Math.random() * Math.floor(that.positions['D'].length));
+        that.lineup.D = that.positions['D'][index];
+        playerIds.push(that.lineup.D.ID);
+        getD2();
       }
 
-      function getFLEX () {
-        let curPositions = that.groupBy(that.playersList, "Roster Position");
-        let index = Math.floor(Math.random() * Math.floor(curPositions['FLEX'].length));
-        that.lineup.FLEX = curPositions['FLEX'][index];
-        playerIds.push(that.lineup.FLEX.ID);
-        getDEF();
+      function getD2 () {
+        let index = Math.floor(Math.random() * Math.floor(that.positions['D'].length));
+        that.lineup.D2 = that.positions['D'][index];
+        playerIds.push(that.lineup.D2.ID);
+        getD3();
       }
 
-      function getDEF () {
-        let index = Math.floor(Math.random() * Math.floor(that.positions['DEF'].length));
-        that.lineup.DEF = that.positions['DEF'][index];
-        playerIds.push(that.lineup.DEF.ID);
+      function getD3 () {
+        let index = Math.floor(Math.random() * Math.floor(that.positions['D'].length));
+        that.lineup.D3 = that.positions['D'][index];
+        playerIds.push(that.lineup.D3.ID);
+        getUTIL();
+      }
+
+      function getUTIL () {
+        let curPositions = that.groupBy(that.playersList, "Position");
+        let index = Math.floor(Math.random() * Math.floor(curPositions['F'].length));
+        that.lineup.UTIL = curPositions['F'][index];
+        playerIds.push(that.lineup.UTIL.ID);
+        getGK();
+      }
+
+      function getGK () {
+        let index = Math.floor(Math.random() * Math.floor(that.positions['GK'].length));
+        that.lineup.GK = that.positions['GK'][index];
+        playerIds.push(that.lineup.GK.ID);
         validateLineup();
       }
 
@@ -443,70 +460,45 @@ export default {
           }
           return result;
         }
+
+        let tooManyPlayersVsGoalie = false;
+
+        let gKteam = that.lineup['GK'].Team;
+
+        const forwardsAndMidfieldersVsGoalie = Object.values(that.lineup).filter((p) => {
+          if (p && p.Position) {
+            return ((p.Position === 'M' && p.Opponent === gKteam) || (p.Position === 'F' && p.Opponent === gKteam))
+          }
+        })
+
+        if(forwardsAndMidfieldersVsGoalie.length > 1){
+          tooManyPlayersVsGoalie = true;
+        }
+
+        console.log(gKteam, forwardsAndMidfieldersVsGoalie)
+
+
         let checkDupes = removeDuplicate(playerIds);
         let totalSalary =
-          parseInt(that.lineup.QB.Salary) +
-          parseInt(that.lineup.RB1.Salary) +
-          parseInt(that.lineup.RB2.Salary) +
-          parseInt(that.lineup.WR1.Salary) +
-          parseInt(that.lineup.WR2.Salary) +
-          parseInt(that.lineup.WR3.Salary) +
-          parseInt(that.lineup.TE.Salary) +
-          parseInt(that.lineup.FLEX.Salary) +
-          parseInt(that.lineup.DEF.Salary);
+          parseInt(that.lineup.F.Salary) +
+          parseInt(that.lineup.F2.Salary) +
+          parseInt(that.lineup.M.Salary) +
+          parseInt(that.lineup.M2.Salary) +
+          parseInt(that.lineup.M3.Salary) +
+          parseInt(that.lineup.M4.Salary) +
+          parseInt(that.lineup.D.Salary) +
+          parseInt(that.lineup.D2.Salary) +
+          parseInt(that.lineup.D3.Salary) +
+          parseInt(that.lineup.UTIL.Salary) +
+          parseInt(that.lineup.GK.Salary);
 
-
-        let games = Object.keys(that.lineup).map((key) => {
-          if (key !== "Total Salary") {
-            return that.lineup[key]['Game']
-          }
-        });
-
-        let gameStacks = new Map([...new Set(games)].map(
-          x => [x, games.filter(y => y === x).length]
-        ));
-
-        gameStacks = Object.fromEntries(gameStacks);
-        delete gameStacks[undefined]
-
-
-
-        that.lineup.gameStacks = Object.keys(gameStacks).map((i) => {
-          if (gameStacks[i] && gameStacks[i] > 3) {
-            if (that.lineup.QB['Game'] === i && that.lineup.QB['Game'] !== that.lineup.DEF['Game']) {
-              return i + ' : ' + gameStacks[i]
-            }
-          } else if (gameStacks[i] && gameStacks[i] > 0
-            && that.lineup.QB['Roster Position'] === "Naked"
-            && that.lineup.QB['Game'] !== that.lineup.DEF['Game']
-          ) {
-            if (that.lineup.QB['Game'] === i) {
-              return i + ' : ' + gameStacks[i]
-            }
-          }
-        }).filter((e) => {
-          if (e) return e;
-        });
-
-        let percentNaked = (that.lineups.filter((obj) => obj['isNaked']).length) / that.lineups.length;
-        if (percentNaked > .45 && that.lineup.QB['Roster Position'] === "Naked") {
-          return setTimeout(() => {
-            that.generate();
-          }, 0);
-        }
-        if (that.lineup.gameStacks.length < 1) {
-          return setTimeout(() => {
-            that.generate();
-          }, 0);
-        }
-
-        if (checkDupes.length < 9) {
+        if (checkDupes.length < 11) {
           console.log('dupes')
           return setTimeout(() => {
             that.generate();
           }, 0);
 
-        } else if (totalSalary < 185) {
+        } else if (totalSalary < 190) {
           console.log('totalSalary min')
           return setTimeout(() => {
             that.generate();
@@ -516,24 +508,28 @@ export default {
           return setTimeout(() => {
             that.generate();
           }, 0);
+        } else if (tooManyPlayersVsGoalie) {
+          return setTimeout(() => {
+            that.generate();
+          }, 0);
         }
 
         else {
           that.lineup['Total Salary'] = totalSalary;
           let lineup = {
-            'QB': that.lineup.QB['ID + Name'] + " " + that.lineup.QB['Team'] + " " + '$' + that.lineup.QB['Salary'],
-            'RB1': that.lineup.RB1['ID + Name'] + " " + that.lineup.RB1['Team'] + " " + '$' + that.lineup.RB1['Salary'],
-            'RB2': that.lineup.RB2['ID + Name'] + " " + that.lineup.RB2['Team'] + " " + '$' + that.lineup.RB2['Salary'],
-            'WR1': that.lineup.WR1['ID + Name'] + " " + that.lineup.WR1['Team'] + " " + '$' + that.lineup.WR1['Salary'],
-            'WR2': that.lineup.WR2['ID + Name'] + " " + that.lineup.WR2['Team'] + " " + '$' + that.lineup.WR2['Salary'],
-            'WR3': that.lineup.WR3['ID + Name'] + " " + that.lineup.WR3['Team'] + " " + '$' + that.lineup.WR3['Salary'],
-            'TE': that.lineup.TE['ID + Name'] + " " + that.lineup.TE['Team'] + " " + '$' + that.lineup.TE['Salary'],
-            'FLEX': that.lineup.FLEX['ID + Name'] + " " + that.lineup.FLEX['Team'] + " " + '$' + that.lineup.FLEX[
+            'F': that.lineup.F['ID + Name'] + " " + that.lineup.F['Team'] + " " + '$' + that.lineup.F['Salary'],
+            'F2': that.lineup.F2['ID + Name'] + " " + that.lineup.F2['Team'] + " " + '$' + that.lineup.F2['Salary'],
+            'M': that.lineup.M['ID + Name'] + " " + that.lineup.M['Team'] + " " + '$' + that.lineup.M['Salary'],
+            'M2': that.lineup.M2['ID + Name'] + " " + that.lineup.M2['Team'] + " " + '$' + that.lineup.M2['Salary'],
+            'M3': that.lineup.M3['ID + Name'] + " " + that.lineup.M3['Team'] + " " + '$' + that.lineup.M3['Salary'],
+            'M4': that.lineup.M4['ID + Name'] + " " + that.lineup.M4['Team'] + " " + '$' + that.lineup.M4['Salary'],
+            'D': that.lineup.D['ID + Name'] + " " + that.lineup.D['Team'] + " " + '$' + that.lineup.D['Salary'],
+            'D2': that.lineup.D2['ID + Name'] + " " + that.lineup.D2['Team'] + " " + '$' + that.lineup.D2[
               'Salary'],
-            'DEF': that.lineup.DEF['ID + Name'] + " " + that.lineup.DEF['Team'] + " " + '$' + that.lineup.DEF['Salary'],
-            'Game Stack': that.lineup.gameStacks[0] + ' players',
-            'Total Salary': totalSalary,
-            'isNaked': that.lineup.QB['Roster Position'] === 'Naked' ? true : false
+            'D3': that.lineup.D3['ID + Name'] + " " + that.lineup.D3['Team'] + " " + '$' + that.lineup.D3['Salary'],
+            'UTIL': that.lineup.UTIL['ID + Name'] + " " + that.lineup.UTIL['Team'] + " " + '$' + that.lineup.UTIL['Salary'],
+            'GK': that.lineup.GK['ID + Name'] + " " + that.lineup.GK['Team'] + " " + '$' + that.lineup.GK['Salary'],
+            'Total Salary': totalSalary
           }
 
           that.lineups.unshift(lineup);
@@ -552,20 +548,22 @@ export default {
 
 
           lineup = {
-            'QB': that.lineup.QB.ID,
-            'RB1': that.lineup.RB1.ID,
-            'RB2': that.lineup.RB2.ID,
-            'WR1': that.lineup.WR1.ID,
-            'WR2': that.lineup.WR2.ID,
-            'WR3': that.lineup.WR3.ID,
-            'TE': that.lineup.TE.ID,
-            'FLEX': that.lineup.FLEX.ID,
-            'DEF': that.lineup.DEF.ID,
+            'F': that.lineup.F.ID,
+            'F2': that.lineup.F2.ID,
+            'M': that.lineup.M.ID,
+            'M2': that.lineup.M2.ID,
+            'M3': that.lineup.M3.ID,
+            'M4': that.lineup.M4.ID,
+            'D': that.lineup.D.ID,
+            'D2': that.lineup.D2.ID,
+            'D3': that.lineup.D3.ID,
+            'UTIL': that.lineup.UTIL.ID,
+            'GK': that.lineup.GK.ID
           };
           that.fullLineups.unshift(lineup);
         }
       }
-      getQB();
+      getF();
 
     }
 
